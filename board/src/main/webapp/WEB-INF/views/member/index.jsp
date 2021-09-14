@@ -3,6 +3,7 @@
 <html>
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .container {
@@ -42,12 +43,13 @@
             <button class="w-100 btn btn-primary btn-lg" type="submit">로그인</button>
         </div>
         <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='join'"type="button">회원가입</button>
+            <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='member/join'"type="button">회원가입</button>
         </div>
     </div>
 
     </form>
 
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

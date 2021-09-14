@@ -22,12 +22,6 @@ public class BoardController {
         return "member/index";
     }
 
-    @GetMapping("/join")
-    public String getJoin(){
-
-        return "member/join";
-    }
-
     @GetMapping("/mybatis")
     @ResponseBody
     public List<Member> getMember() {
