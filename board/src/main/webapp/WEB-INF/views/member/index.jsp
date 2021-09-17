@@ -1,3 +1,4 @@
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!DOCTYPE HTML>
 <html>
@@ -15,6 +16,7 @@
         }
     </style>
     <title>로그인</title>
+
 </head>
 <body>
 
@@ -26,28 +28,53 @@
         <h2>로그인</h2>
     </div>
 
-    <form id="loginForm" class="loginForm" method="post"></form>
-    <div>
-        <label for="itemName">아이디</label>
-        <input type="text" id="itemName" class="form-control" placeholder="이름을 입력하세요">
-    </div>
-    <div>
-        <label for="price">비밀번호</label>
-        <input type="text" id="price" class="form-control" placeholder="가격을 입력하세요">
-    </div>
-
-    <hr class="my-4">
-
-    <div class="row">
-        <div class="col">
-            <button class="w-100 btn btn-primary btn-lg" type="submit">로그인</button>
+    <form id="loginForm" class="loginForm" method="post">
+        <div>
+            <label for="member_id">아이디</label>
+            <input type="text" id="member_id" name="member_id" class="form-control" placeholder="아이디를 입력하세요">
         </div>
-        <div class="col">
-            <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='member/join'"type="button">회원가입</button>
+        <div>
+            <label for="member_pw">비밀번호</label>
+            <input type="password" id="member_pw" name="member_pw" class="form-control" placeholder="비밀번호를 입력하세요">
         </div>
-    </div>
 
+        <hr class="my-4">
+
+        <div class="row">
+            <div class="col">
+                <button type="submit" class="w-100 btn btn-primary btn-lg" >로그인</button>
+            </div>
+            <div class="col">
+                <button class="w-100 btn btn-secondary btn-lg" onclick="location.href='member/join'"type="button">회원가입</button>
+            </div>
+        </div>
+
+        <c:if test="${msg == false}">
+            <script>
+                alert('아이디 혹은 비밀번호를 확인하세요.');
+            </script>
+        </c:if>
     </form>
+
+    <!-- Modal -->
+    <div class="modal fade" id="alertModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">경고</h5>
+                </div>
+                <div class="modal-body">
+                    <p class="modal-contents"></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">확인</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <hr/>
+
+
 
 </div>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>

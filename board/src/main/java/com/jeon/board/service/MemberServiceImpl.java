@@ -24,4 +24,13 @@ public class MemberServiceImpl implements MemberService{
     public int idCheck(String member_id) {
         return memberMapper.idCheck(member_id);
     }
+
+    //로그인
+    @Override
+    public boolean login(Member member) {
+        if(memberMapper.login(member) == 1)
+            return true;
+        else
+            return false;
+    }
 }

@@ -20,13 +20,13 @@ public class MemberController {
 
     @GetMapping("/join")
     public String getJoin(){
-
+        log.info("Get Join");
         return "member/join";
     }
 
     @PostMapping("/join")
     public String postJoin(Member member){
-        log.info("join");
+        log.info("Post join");
         memberService.join(member);
         return "redirect:/";
     }
