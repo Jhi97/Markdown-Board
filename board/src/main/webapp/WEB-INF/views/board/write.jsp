@@ -8,8 +8,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="/node_modules/bootstrap/dist/css/bootstrap.min.css">
+    <!-- TOAST UI Editor -->
+    <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
+    <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
     <title>메모 작성하기</title>
 </head>
 <body>
@@ -27,18 +29,18 @@
 
 <!-- Bootstrap js -->
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script type="module">
-    import Editor from '@toast-ui/editor';
-    import '@toast-ui/editor/dist/toastui-editor.css';
-    import '@toast-ui/editor/dist/theme/toastui-editor-dark.css';
-
-    const editor = new Editor({
+<script>
+    const editor = new toastui.Editor({
         el: document.querySelector('#editor'),
         previewStyle: 'vertical',
-        height: '500px',
-        initialValue: content,
+        height: '700px',
+        initialEditType: 'markdown',
+        initialValue: '### 내용을 입력하세요',
         theme: 'dark',
     });
+    // 컨텐츠 내용 확인
+    console.log(editor.getHTML());
+
 </script>
 </body>
 </html>
