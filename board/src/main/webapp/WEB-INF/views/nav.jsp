@@ -1,9 +1,9 @@
 <div class="container">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <ul class="nav col-10 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 custom-font1">
+        <ul class="nav col-10 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0 custom-font1" style="font-size: 25px;">
             <%=session.getAttribute("member")%>'s Board
         </ul>
-        <ul class="nav col-2 custom-font2">
+        <ul class="nav col-2 custom-font2" style="font-size: 19px;">
             <li><a href="#" class="nav-link px-3">search</a></li>
             <li><a href="/board/write" class="nav-link px-3">New Write</a></li>
         </ul>

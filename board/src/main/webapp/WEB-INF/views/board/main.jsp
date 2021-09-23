@@ -1,30 +1,25 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!doctype html>
-<html lang="en">
+<html>
 <head>
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
     <!-- Bootstrap CSS -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <title>Jeon's Board</title>
 
     <style>
-        .custom-font1{
-            font-size: 25px;
-        }
-        .custom-font2{
-            font-size: 19px;
-        }
-        .category-title, .text-title{
-            font-size: 20px;
-        }
+
         .border-bottom{
             padding: 0px 10px 10px 10px;
             border-bottom: solid 1px;
+        }
+        .category-title, .text-title{
+            font-size: 20px;
         }
         .category-body{
             margin-top: 10px;
@@ -60,8 +55,8 @@
     </section>
 
 
-<!-- Option 1: Bootstrap Bundle with Popper -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 </html>
