@@ -7,4 +7,9 @@
     <select id="getMember" resultType="com.jeon.board.dto.Member">
         SELECT * FROM board.member;
     </select>
+
+    <insert id="postWrite">
+        INSERT INTO board.post (post_memberId, post_title, post_contents, post_category)
+         VALUES(memberId, post.title, post.contents, post.category);
+    </insert>
 </mapper>
