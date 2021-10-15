@@ -6,6 +6,6 @@ import lombok.Data;
 public class Post {
     int post_num;
     String title;
-    String Category;
-    String Contents;
+    String category;
+    String contents;
 }

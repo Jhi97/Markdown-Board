@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <div class="container">
     <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start">
-        <ul class="nav col-9 col-lg-auto me-lg-auto mb-2 mb-md-0 custom-font1" style="font-size: 25px;">
+        <ul class="nav col-9 col-lg-auto me-lg-auto mb-2 mb-md-0 custom-font1" style="font-size: 25px; font-weight: bold">
             <%=session.getAttribute("member")%>'s Board
         </ul>
         <ul class="nav col-2 custom-font2" style="font-size: 19px;">

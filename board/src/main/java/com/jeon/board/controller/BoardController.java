@@ -4,10 +4,9 @@ import com.jeon.board.dto.Post;
 import com.jeon.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
@@ -19,7 +18,7 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/board")
 public class BoardController {
 
-    private BoardService boardService;
+    private final BoardService boardService;
 
     //메인화면
     @GetMapping("/main")
@@ -35,9 +34,12 @@ public class BoardController {
 
     //작성완료
     @PostMapping("/write")
-    public String postWrite(Post post, HttpServletRequest request) {
+    @ResponseBody
+    public String postWrite(@RequestBody Post post, HttpServletRequest request) {
         HttpSession session = request.getSession();
         String memberId = String.valueOf(session.getAttribute("member"));
+        log.info("member: "+ memberId);
+        log.info("post: "+ post.toString());
         boardService.postWrite(post, memberId);
         return "/board/main";
     }
