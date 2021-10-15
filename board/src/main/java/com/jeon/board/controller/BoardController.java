@@ -4,12 +4,15 @@ import com.jeon.board.dto.Post;
 import com.jeon.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
 
 
 @Controller
@@ -22,7 +25,19 @@ public class BoardController {
 
     //메인화면
     @GetMapping("/main")
-    public String getMain(){
+    public String getMain(HttpServletRequest request){
+        HttpSession session = request.getSession();
+        String memberId = String.valueOf(session.getAttribute("member"));
+        Map<String, Object> result = boardService.getMain(memberId);
+        List<Post> postList = (List<Post>) result.get("post");
+        List<String> categoryList = (List<String>) result.get("category");
+
+        //작성글 유무 확인
+        int cnt = postList.size();
+        //request 객체에 저장
+        request.setAttribute("post", postList);
+        request.setAttribute("category", categoryList);
+        request.setAttribute("cnt", cnt);
         return "/board/main";
     }
 
