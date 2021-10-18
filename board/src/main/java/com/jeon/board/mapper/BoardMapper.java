@@ -16,4 +16,6 @@ public interface BoardMapper {
     List<HashMap<String, Object>> getCategory();
     // 글쓰기
     void postWrite(@Param("post")Post post, @Param("member_id") String memberId);
+    //글 상세보기
+    Post getView(@Param("num")int num);
 }

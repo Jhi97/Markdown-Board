@@ -6,9 +6,13 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -57,5 +61,23 @@ public class BoardController {
         log.info("post: "+ post.toString());
         boardService.postWrite(post, memberId);
         return "/board/main";
+    }
+
+    //글 상세보기
+    @GetMapping("/view")
+    public String getView(@RequestParam("num") int num,
+                          HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession();
+        String memberId = String.valueOf(session.getAttribute("member"));
+        try{
+            Post post = boardService.getView(num, memberId);
+            request.setAttribute("post", post);
+        } catch (IllegalAccessException e) {
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('잘못된 접근입니다.');location.href='/board/main';</script>");
+            out.flush();
+        }
+        return "/board/view";
     }
 }

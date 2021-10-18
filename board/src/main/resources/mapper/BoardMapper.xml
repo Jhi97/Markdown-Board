@@ -24,4 +24,9 @@
         INSERT INTO board.post (post_member, title, contents, category)
          VALUES(#{member_id}, #{post.title}, #{post.contents}, #{post.category});
     </insert>
+
+    <!-- 글 상세보기 -->
+    <select id="getView" resultType="com.jeon.board.dto.Post">
+        SELECT * FROM post WHERE num = #{num};
+    </select>
 </mapper>

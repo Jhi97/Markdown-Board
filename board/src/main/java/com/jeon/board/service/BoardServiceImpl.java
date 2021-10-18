@@ -30,4 +30,17 @@ public class BoardServiceImpl implements BoardService{
         log.info("run BoardService postWrite");
         boardMapper.postWrite(post, memberId);
     }
+
+    @Override
+    public Post getView(int num, String memberId) throws IllegalAccessException {
+        Post post = boardMapper.getView(num);
+        if (!post.getPost_member().equals(memberId)) {
+            IllegalAccessException userError = new IllegalAccessException();
+            throw userError;
+        }else{
+            // javascript 변수 선언을 위한 개행 처리
+            post.setContents(post.getContents().replace("\n", "<br>"));
+            return post;
+        }
+    }
 }

@@ -26,6 +26,12 @@
             margin-top: 10px;
             border-left: solid 1px #dee2e6;
         }
+        a{
+            text-decoration: none;
+        }
+        .categories{
+            margin-bottom: 5px;
+        }
     </style>
 </head>
 <body>
@@ -58,7 +64,7 @@
                                 <c:forEach items="${post}" var="post">
                                     <tr>
                                         <td>${post.num}</td>
-                                        <td><a href="#">${post.title}</a></td>
+                                        <td><a href="/board/view?num=${post.num}">${post.title}</a></td>
                                         <td>${post.category}</td>
                                         <td><fmt:formatDate value="${post.createDate}" pattern="yyyy-MM-dd"/></td>
                                     </tr>
@@ -72,14 +78,12 @@
             <!-- 글 목록 출력 끝 -->
             <!-- 카테고리 출력 -->
             <div class="col-2 category-area">
-                <div class="category-title border-bottom">
-                    Category
-                </div>
+                <div class="category-title border-bottom">카테고리</div>
                 <div class="h-100 category-body">
-                    <div><a href="#">전체보기</a></div>
+                    <div class="categories"><a href="#">전체보기</a></div>
                     <c:forEach items="${category}" var="category">
                         <c:if test="${category!=null}">
-                            <div><a href="#">${category.name}</a> (${category.cnt})</div>
+                            <div class="categories"><a href="#">${category.name}</a> (${category.cnt})</div>
                         </c:if>
                     </c:forEach>
                 </div>
