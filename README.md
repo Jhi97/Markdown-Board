@@ -5,7 +5,7 @@
 
 ### ⚙️ Board 기술 스택
 
-📃 API & Library :  Bootstrap
+📃 API & Library :  Bootstrap, Toast UI Editor
 
 💬 Language : JAVA 11, JavaScript, JSTL, JSP, JQuery, XML
 
