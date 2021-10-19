@@ -34,10 +34,11 @@
                         <div class="d-flex flex-column align-items-center text-center">
                             <img src="https://github.com/mdo.png" id="member_img" class="rounded-circle" width="150" height="150">
                             <div class="mt-3">
-                                <h4>${member}</h4>
+                                <h4>${memberId}</h4>
                                 <div>
                                     <p class="text-secondary mb-1" id="introduce">목표, 자기소개, 의지 등을 적어주세요</p>
                                 </div>
+                                <button class="btn btn-primary" id="edit_Img" onclick="edit_img()">이미지 변경</button>
                                 <button class="btn btn-outline-primary" id="edit">프로필 수정</button>
                             </div>
                         </div>
@@ -51,31 +52,31 @@
                             <div class="col-sm-3">
                                 <h6 class="mb-0">아이디</h6>
                             </div>
-                            <div class="col-sm-9 text-secondary">${member}</div>
+                            <div class="col-sm-9 text-secondary">${memberId}</div>
                         </div><hr>
                         <div class="row">
                             <div class="col-sm-3">
                                 <h6 class="mb-0">이메일</h6>
                             </div>
-                            <div class="col-sm-9 text-secondary"><p id="member_email">회원 메일</p></div>
+                            <div class="col-sm-9 text-secondary"><p id="member_email">${member.member_email}</p></div>
                         </div><hr>
                         <div class="row">
                             <div class="col-sm-3">
                                 <h6 class="mb-0">성별</h6>
                             </div>
-                            <div class="col-sm-9 text-secondary"><p id="member_gender">여</p></div>
+                            <div class="col-sm-9 text-secondary"><p id="member_gender">${member.member_gender}</p></div>
                         </div><hr>
                         <div class="row">
                             <div class="col-sm-3">
                                 <h6 class="mb-0">가입 일자</h6>
                             </div>
-                            <div class="col-sm-9 text-secondary"><p id="member_joinDate">회원 가입일자</p></div>
+                            <div class="col-sm-9 text-secondary"><fmt:formatDate value="${member.member_joinDate}" pattern="yyyy-MM-dd"/></div>
                         </div><hr>
                         <div class="row">
                             <div class="col-sm-3">
                                 <h6 class="mb-0">총 게시글 수</h6>
                             </div>
-                            <div class="col-sm-9 text-secondary"><p id="post_cnt">회원 총 게시글</p></div>
+                            <div class="col-sm-9 text-secondary"><p id="post_cnt">${allCount} 개</p></div>
                         </div>
                     </div>
                 </div>
@@ -111,18 +112,15 @@
 
         $('#edit').click(function(){
             let mail = $('#member_email').html();
-            let gender = $('#member_gender').html();
-            let insBtn = '<button class="btn btn-primary" id="edit_Img" onclick="edit_img()">이미지 변경</button>';
-            let insBtn2 = '<button class="btn btn-outline-primary" id="edit_complete">수정 완료</button>';
+            let insBtn = '<button class="btn btn-outline-primary" id="edit_complete">수정 완료</button>';
 
             //수정 input 삽입
             $('#introduce').contents().unwrap().wrap('<input type="text" class="form-control" id="introduce" placeholder="목표, 자기소개, 의지 등">');
-            $('#member_email').contents().unwrap().wrap('<input type="text" class="form-control" id="member_email" value="">');
+            $('#member_email').contents().unwrap().wrap('<input type="email" class="form-control" id="member_email" value="">');
             $('#member_email').attr("value", mail);
 
             //버튼 동적 삽입 및 삭제
             $('#edit').before(insBtn);
-            $('#edit').before(insBtn2);
             $('#edit').remove();
         });
 
@@ -134,6 +132,23 @@
         $('#imgFormSubmit').click(function (){
             form = $('#imageUploadForm')[0];
             data = new FormData(form);
+
+            $.ajax({
+                type:'post',
+                enctype: 'multipart/form-data',
+                url: '/member/profile/alterImg',
+                data: data,
+                processData: false,
+                contentType: false,
+                cache: false,
+                timeout: 600000,
+                success: function(data){
+                    window.location.replace(data);
+                },
+                error: function(e){
+                    alert('ERROR! ' + e.responseText);
+                }
+            });
         });
 
         $("#img_file").change(function(){
@@ -148,27 +163,31 @@
 
         //동적 생성 된 수정완료 버튼 클릭 이벤트
         $(document).on("click","#edit_complete", function (){
+            //이메일 검증
+            let emailVal = $('#member_email').val();
+            let regExp = /[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]$/i;
+            if (emailVal.match(regExp) == null) {
+                alert('이메일을 정확히 입력해주세요.');
+                return false;
+            }
+            let profileData = {'email' : emailVal, 'introduce' : $('#introduce').val()}
+            console.log(profileData);
             $.ajax({
-                type:'post',
-                enctype: 'multipart/form-data',
-                url: '/member/profile/edit',
-                data: data,
-                processData: false,
-                contentType: false,
-                cache: false,
-                timeout: 600000,
-                success: function(data){
-                    window.location.replace(data);
-                },
-                error: function(e){
-                    alert('ERROR! ' + e.responseText);
-                }
+                    url : "/member/profile/edit",
+                    type : "POST",
+                    data : JSON.stringify(profileData),
+                    contentType: 'application/json; charset:UTF-8',
+                    success: function (data){
+                        // 이전 정보를 저장하지 않도록 replace 사용
+                        window.location.replace(data);
+                    },
+                    error: function() {
+                        alert('error');
+                    }
             });
+
         });
     });
-    function edit_img() {
-
-    }
 </script>
 </body>
 </html>

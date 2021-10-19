@@ -5,6 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 
 public interface MemberService {
 
@@ -17,8 +18,16 @@ public interface MemberService {
     //로그인
     int login(Member member);
 
+    //회원 전체 게시글 수 조회
+
+    //회원 정보 조회
+    Map<String, Object> getMember(int memberNum);
+
+    //프로필 수정
+    void editProfile(int memberNum, String introduce, String email);
+
     //이미지 업로드
     void uploadImg(List<MultipartFile> files) throws IOException;
 
-    //회원 정보 가져오기
+    
 }

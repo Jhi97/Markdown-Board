@@ -16,6 +16,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -25,6 +26,12 @@ public class MemberController {
 
     private final MemberService memberService;
 
+    public static int getMemberNum(HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        return Integer.parseInt(session.getAttribute("memberNum").toString());
+    }
+
+    //회원가입
     @GetMapping("/join")
     public String getJoin(){
         log.info("Get Join");
@@ -37,29 +44,42 @@ public class MemberController {
         memberService.join(member);
         return "redirect:/";
     }
-
+    //회원 아이디 체크
     @PostMapping("/join/idCheck")
     @ResponseBody
     public int idCheck(Member m){
         log.info("idCheck");
         return memberService.idCheck(m.getMember_id());
     }
-
+    //프로필 페이지
     @GetMapping("/profile")
-    public String getProfile(HttpServletRequest request, HttpSession session) {
-        session = request.getSession();
-        String memberId = String.valueOf(session.getAttribute("memberId"));
-
-
+    public String getProfile(HttpServletRequest request) {
+        int memberNum = getMemberNum(request);
+        Map<String, Object> map = memberService.getMember(memberNum);
+        Member member = (Member) map.get("member");
+        int allCount = Integer.parseInt(map.get("allCount").toString());
+        request.setAttribute("member", member);
+        request.setAttribute("allCount", allCount);
         return "/member/profile";
     }
 
     @PostMapping("/profile/edit")
     @ResponseBody
-    public ResponseEntity<?> profileEdit(@RequestParam("file") MultipartFile uploadImg) {
+    public String editProfile(@RequestBody String email,
+                              @RequestBody String introduce,
+                              HttpServletRequest request) {
+        log.info("email: " + email + "introduce: "+ introduce);
+        int memberNum = getMemberNum(request);
+        memberService.editProfile(memberNum, introduce, email);
+        return "/member/profile";
+    }
+
+    @PostMapping("/profile/alterImg")
+    @ResponseBody
+    public ResponseEntity<?> alterImage(@RequestParam("file") MultipartFile uploadImg) {
         log.info("run upload");
         if (uploadImg.isEmpty()) {
-            return new ResponseEntity<>("파일을 선택하세요.", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("/member/profile", HttpStatus.OK);
         }
         log.info(uploadImg.getName());
         log.info(uploadImg.getOriginalFilename());
@@ -73,4 +93,6 @@ public class MemberController {
 
         return new ResponseEntity("/member/profile", new HttpHeaders(), HttpStatus.OK);
     }
+
+
 }

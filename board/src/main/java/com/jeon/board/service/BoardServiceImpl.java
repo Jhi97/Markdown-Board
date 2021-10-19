@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.http.HttpSession;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class BoardServiceImpl implements BoardService{
         Map<String, Object> map = new HashMap<>();
         map.put("post", boardMapper.getMain(memberNum));
         map.put("category", boardMapper.getCategory());
+        map.put("allCount", boardMapper.getCount(memberNum));
         return map;
     }
 

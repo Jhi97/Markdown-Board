@@ -32,6 +32,7 @@ public class BoardController {
         Map<String, Object> result = boardService.getMain(memberNum);
         List<Post> postList = (List<Post>) result.get("post");
         List<String> categoryList = (List<String>) result.get("category");
+        int allCount = Integer.parseInt(result.get("allCount").toString());
 
         //작성글 유무 확인
         int cnt = postList.size();
@@ -40,6 +41,7 @@ public class BoardController {
         request.setAttribute("post", postList);
         request.setAttribute("category", categoryList);
         request.setAttribute("cnt", cnt);
+        request.setAttribute("allCount", allCount);
         return "/board/main";
     }
 
@@ -70,6 +72,7 @@ public class BoardController {
         try {
             Post post = boardService.getView(num, memberNum);
             request.setAttribute("post", post);
+            //다른 아이디로 접근 시 에러
         } catch (IllegalAccessException e) {
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter out = response.getWriter();

@@ -114,7 +114,7 @@
                 <div class="category-title border-bottom">카테고리</div>
                 <c:if test="${cnt != 0}">
                     <div class="h-100 category-body">
-                        <div class="categories"><a href="#">전체보기</a></div>
+                        <div class="categories"><a href="#">전체보기</a> (${allCount})</div>
                         <c:forEach items="${category}" var="category">
                             <c:if test="${category!=null}">
                                 <div class="categories"><a href="#" onclick="cate_click_fn(this);">${category.name}</a> (${category.cnt})</div>
