@@ -10,3 +10,8 @@ spring:
     url: jdbc:mysql://localhost:3306/board?characterEncoding=utf8
     username: TestUser
     password: 1234
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      location: C:\Users\jeon9\Desktop\study\ToyProject\ToyProject\board\src\main\webapp\resources\images

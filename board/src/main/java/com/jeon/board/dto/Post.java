@@ -6,10 +6,10 @@ import java.util.Date;
 
 @Data
 public class Post {
-    int num;
-    String post_member;
-    String title;
-    String category;
-    String contents;
-    Date createDate;
+    private int post_num;
+    private int member_num;
+    private String title;
+    private String category;
+    private String contents;
+    private Date createDate;
 }

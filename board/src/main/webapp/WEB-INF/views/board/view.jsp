@@ -14,7 +14,7 @@
     <!-- Toast UI Editor Viewer-->
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.css" />
-    <title>Hello, world!</title>
+    <title>${post.title} - ${post.category}</title>
     <style>
         span.view_category::after{
             padding: 0px 5px 0px 5px;

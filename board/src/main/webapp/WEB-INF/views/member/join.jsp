@@ -94,8 +94,8 @@
                 <label for="userGender" class="col-lg-2 control-label">성별</label>
                 <div class="col-lg-12">
                     <select class="form-control" id="userGender" name="member_gender">
-                        <option value="M">남</option>
-                        <option value="F">여</option>
+                        <option value="남">남</option>
+                        <option value="여">여</option>
                     </select>
                 </div>
             </div>

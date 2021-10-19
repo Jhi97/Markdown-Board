@@ -6,7 +6,7 @@
 <mapper namespace="com.jeon.board.mapper.BoardMapper">
     <!-- 글목록 -->
     <select id="getMain" resultType="com.jeon.board.dto.Post">
-        SELECT * FROM post WHERE post_member = #{member_id} ORDER BY num DESC;
+        SELECT * FROM post WHERE member_num = #{memberNum} ORDER BY post_num DESC;
     </select>
 
     <!-- 카테고리 목록 -->
@@ -21,12 +21,12 @@
     
     <!-- 글쓰기 -->
     <insert id="postWrite">
-        INSERT INTO board.post (post_member, title, contents, category)
-         VALUES(#{member_id}, #{post.title}, #{post.contents}, #{post.category});
+        INSERT INTO board.post (member_num, title, contents, category)
+         VALUES(#{memberNum}, #{post.title}, #{post.contents}, #{post.category});
     </insert>
 
     <!-- 글 상세보기 -->
     <select id="getView" resultType="com.jeon.board.dto.Post">
-        SELECT * FROM post WHERE num = #{num};
+        SELECT * FROM post WHERE post_num = #{post_num};
     </select>
 </mapper>

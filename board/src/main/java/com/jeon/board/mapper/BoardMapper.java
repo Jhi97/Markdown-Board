@@ -11,11 +11,11 @@ import java.util.List;
 @Mapper
 public interface BoardMapper {
     // 게시글 목록
-    List<Post> getMain(@Param("member_id") String memberId);
+    List<Post> getMain(@Param("memberNum") int memberNum);
     // 카테고리 목록
     List<HashMap<String, Object>> getCategory();
     // 글쓰기
-    void postWrite(@Param("post")Post post, @Param("member_id") String memberId);
+    void postWrite(@Param("post")Post post, @Param("memberNum") int memberNum);
     //글 상세보기
-    Post getView(@Param("num")int num);
+    Post getView(@Param("post_num")int num);
 }

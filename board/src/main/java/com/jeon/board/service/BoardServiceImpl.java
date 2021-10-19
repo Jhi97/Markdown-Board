@@ -17,24 +17,24 @@ public class BoardServiceImpl implements BoardService{
     private final BoardMapper boardMapper;
 
     @Override
-    public Map<String, Object> getMain(String memberId) {
+    public Map<String, Object> getMain(int memberNum) {
         log.info("run BoardService getMain");
         Map<String, Object> map = new HashMap<>();
-        map.put("post", boardMapper.getMain(memberId));
+        map.put("post", boardMapper.getMain(memberNum));
         map.put("category", boardMapper.getCategory());
         return map;
     }
 
     @Override
-    public void postWrite(Post post, String memberId) {
-        log.info("run BoardService postWrite");
-        boardMapper.postWrite(post, memberId);
+    public void postWrite(Post post, int memberNum) {
+        log.info("memberNum: " + memberNum);
+        boardMapper.postWrite(post, memberNum);
     }
 
     @Override
-    public Post getView(int num, String memberId) throws IllegalAccessException {
+    public Post getView(int num, int memberNum) throws IllegalAccessException {
         Post post = boardMapper.getView(num);
-        if (!post.getPost_member().equals(memberId)) {
+        if (!(post.getMember_num()==memberNum)) {
             IllegalAccessException userError = new IllegalAccessException();
             throw userError;
         }else{

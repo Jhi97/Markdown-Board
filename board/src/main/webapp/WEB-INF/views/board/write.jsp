@@ -13,7 +13,7 @@
     <!-- TOAST UI Editor -->
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor.min.css" />
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-all.min.js"></script>
-    <title>메모 작성하기</title>
+    <title>글쓰기</title>
     <style>
         body {
             overflow: hidden;

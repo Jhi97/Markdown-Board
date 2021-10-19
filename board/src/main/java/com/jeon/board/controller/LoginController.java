@@ -31,11 +31,12 @@ public class LoginController {
     public String postLogin(Member member, HttpServletRequest request, RedirectAttributes rttr){
         log.info("post login");
         HttpSession session = request.getSession();
-        boolean success = memberService.login(member);
+        int member_num = memberService.login(member);
 
-        if (success == true) {
+        if (member_num > 0) {
             log.info("login Success");
-            session.setAttribute("member", member.getMember_id());
+            session.setAttribute("memberId", member.getMember_id());
+            session.setAttribute("memberNum", member_num);
             return "redirect:/board/main";
         } else{
             log.info("login Fail");
