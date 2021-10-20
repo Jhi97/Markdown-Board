@@ -22,7 +22,7 @@ public class BoardServiceImpl implements BoardService{
         log.info("run BoardService getMain");
         Map<String, Object> map = new HashMap<>();
         map.put("post", boardMapper.getMain(memberNum));
-        map.put("category", boardMapper.getCategory());
+        map.put("category", boardMapper.getCategory(memberNum));
         map.put("allCount", boardMapper.getCount(memberNum));
         return map;
     }

@@ -1,7 +1,6 @@
 package com.jeon.board.controller;
 
 import com.jeon.board.dto.Member;
-import com.jeon.board.dto.Profile;
 import com.jeon.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

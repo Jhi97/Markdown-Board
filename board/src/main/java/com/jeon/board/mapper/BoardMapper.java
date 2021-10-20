@@ -13,7 +13,7 @@ public interface BoardMapper {
     // 게시글 목록
     List<Post> getMain(@Param("memberNum") int memberNum);
     // 카테고리 목록
-    List<HashMap<String, Object>> getCategory();
+    List<HashMap<String, Object>> getCategory(@Param("memberNum") int memberNum);
     // 전체 게시글 수
     int getCount(@Param("memberNum")int memberNum);
     // 글쓰기

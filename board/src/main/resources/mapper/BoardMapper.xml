@@ -11,7 +11,9 @@
 
     <!-- 카테고리 목록 -->
     <select id="getCategory" resultType="HashMap">
-        SELECT category name, count(category) cnt FROM post GROUP BY category HAVING category IS NOT NULL;
+        SELECT category name, count(category) cnt FROM post
+            WHERE member_num = #{memberNum}
+                GROUP BY category HAVING category IS NOT NULL;
     </select>
 
     <!-- 모든 글 개수 -->
