@@ -32,13 +32,18 @@
                 <div class="card mb-3">
                     <div class="card-body">
                         <div class="d-flex flex-column align-items-center text-center">
-                            <img src="https://github.com/mdo.png" id="member_img" class="rounded-circle" width="150" height="150">
+                            <img src="../../../resources/upload/member_Img/${profile.member_img}" id="member_img" class="rounded-circle" width="150" height="150">
                             <div class="mt-3">
                                 <h4>${memberId}</h4>
                                 <div>
-                                    <p class="text-secondary mb-1" id="introduce">목표, 자기소개, 의지 등을 적어주세요</p>
+                                    <c:if test="${empty profile.introduce}">
+                                        <p class="text-secondary mb-1" id="introduce">목표, 자기소개, 의지 등을 적어주세요</p>
+                                    </c:if>
+                                    <c:if test="${profile.introduce ne ''}">
+                                        <p class="text-secondary mb-1" id="introduce">${profile.introduce}</p>
+                                    </c:if>
                                 </div>
-                                <button class="btn btn-primary" id="edit_Img" onclick="edit_img()">이미지 변경</button>
+                                <button class="btn btn-primary" id="edit_Img">이미지 변경</button>
                                 <button class="btn btn-outline-primary" id="edit">프로필 수정</button>
                             </div>
                         </div>
@@ -97,7 +102,7 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" id="imgFormSubmit" data-bs-dismiss="modal">확인</button>
+                <button type="button" class="btn btn-primary" id="imgFormSubmit" data-bs-dismiss="modal">변경</button>
             </div>
         </div>
     </div>
@@ -113,9 +118,11 @@
         $('#edit').click(function(){
             let mail = $('#member_email').html();
             let insBtn = '<button class="btn btn-outline-primary" id="edit_complete">수정 완료</button>';
-
+            let insIpt = '<input type="text" class="form-control" id="introduce" placeholder="목표, 자기소개, 의지 등"' +
+                'value="<c:if test="${not empty profile.introduce}">${profile.introduce}</c:if>">'
             //수정 input 삽입
-            $('#introduce').contents().unwrap().wrap('<input type="text" class="form-control" id="introduce" placeholder="목표, 자기소개, 의지 등">');
+            $('#introduce').contents().unwrap()
+                .wrap(insIpt);
             $('#member_email').contents().unwrap().wrap('<input type="email" class="form-control" id="member_email" value="">');
             $('#member_email').attr("value", mail);
 
@@ -153,7 +160,7 @@
 
         $("#img_file").change(function(){
             if(this.files && this.files[0]) {
-                var reader = new FileReader;
+                let reader = new FileReader;
                 reader.onload = function(data) {
                     $("#member_img").attr("src", data.target.result);
                 }

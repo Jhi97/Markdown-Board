@@ -1,6 +1,7 @@
 package com.jeon.board.controller;
 
 import com.jeon.board.dto.Member;
+import com.jeon.board.dto.Profile;
 import com.jeon.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -11,6 +12,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -31,12 +33,16 @@ public class LoginController {
     public String postLogin(Member member, HttpServletRequest request, RedirectAttributes rttr){
         log.info("post login");
         HttpSession session = request.getSession();
-        int member_num = memberService.login(member);
+        int memberNum = memberService.login(member);
+        Map<String, Object> memberInfo = memberService.getMember(memberNum);
+        Profile profile = (Profile) memberInfo.get("profile");
 
-        if (member_num > 0) {
+        // 미가입 회원 체크
+        if (memberNum > 0) {
             log.info("login Success");
             session.setAttribute("memberId", member.getMember_id());
-            session.setAttribute("memberNum", member_num);
+            session.setAttribute("memberNum", memberNum);
+            session.setAttribute("profile", profile);
             return "redirect:/board/main";
         } else{
             log.info("login Fail");

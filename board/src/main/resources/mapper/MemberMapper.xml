@@ -21,6 +21,11 @@
         INSERT INTO profile(profile_num) VALUE(#{memberNum});
     </insert>
 
+    <!-- 프로필 조회 -->
+    <select id="getProfile" resultType="com.jeon.board.dto.Profile">
+        SELECT * FROM profile WHERE profile_num = #{memberNum};
+    </select>
+
     <!-- 아이디 중복체크 -->
     <select id="idCheck" resultType="int">
         SELECT count(*) FROM member WHERE member_id = #{member_id}
@@ -46,10 +51,10 @@
     <!-- 프로필 수정 -->
     <update id="editProfile">
         UPDATE profile SET
-        <if test='introduce != null'>
+        <if test='profile.introduce != null'>
             introduce = #{profile.introduce}
         </if>
-        <if test='member_img != null'>
+        <if test='profile.member_img != null'>
             member_img = #{profile.member_img}
         </if>
             WHERE profile_num = #{profile.profile_num}

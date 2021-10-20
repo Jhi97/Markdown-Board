@@ -1,6 +1,7 @@
 package com.jeon.board.controller;
 
 import com.jeon.board.dto.Member;
+import com.jeon.board.dto.Profile;
 import com.jeon.board.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -53,20 +54,23 @@ public class MemberController {
     //프로필 페이지
     @GetMapping("/profile")
     public String getProfile(HttpServletRequest request) {
-        int memberNum = getMemberNum(request);
-        Map<String, Object> map = memberService.getMember(memberNum);
+        Map<String, Object> map = memberService.getMember(getMemberNum(request));
         Member member = (Member) map.get("member");
+        Profile profile = (Profile) map.get("profile");
         int allCount = Integer.parseInt(map.get("allCount").toString());
+
         request.setAttribute("member", member);
         request.setAttribute("allCount", allCount);
+        request.getSession().setAttribute("profile", profile);
         return "/member/profile";
     }
 
     @PostMapping("/profile/edit")
     @ResponseBody
-    public String editProfile(@RequestBody String email,
-                              @RequestBody String introduce,
+    public String editProfile(@RequestBody Map<String,Object> json,
                               HttpServletRequest request) {
+        String email = json.get("email").toString();
+        String introduce = json.get("introduce").toString();
         log.info("email: " + email + "introduce: "+ introduce);
         int memberNum = getMemberNum(request);
         memberService.editProfile(memberNum, introduce, email);
@@ -75,16 +79,20 @@ public class MemberController {
 
     @PostMapping("/profile/alterImg")
     @ResponseBody
-    public ResponseEntity<?> alterImage(@RequestParam("file") MultipartFile uploadImg) {
+    public ResponseEntity<?> alterImage(@RequestParam("file") MultipartFile uploadImg, HttpServletRequest request) {
         log.info("run upload");
+        // 회원 번호 및 프로필 조회
+        int memberNum = getMemberNum(request);
+        Profile profile =(Profile) request.getSession().getAttribute("profile");
+        String beforeImg = profile.getMember_img();
+
         if (uploadImg.isEmpty()) {
             return new ResponseEntity<>("/member/profile", HttpStatus.OK);
         }
-        log.info(uploadImg.getName());
         log.info(uploadImg.getOriginalFilename());
 
         try {
-            memberService.uploadImg(Arrays.asList(uploadImg));
+            memberService.uploadImg(Arrays.asList(uploadImg), memberNum, beforeImg);
 
         }catch (IOException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);

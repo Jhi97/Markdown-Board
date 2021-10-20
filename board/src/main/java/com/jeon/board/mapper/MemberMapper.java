@@ -21,6 +21,8 @@ public interface MemberMapper {
     //프로필 생성
     void joinProfile(@Param("memberNum") int memberNum);
 
+    Profile getProfile(@Param("memberNum") int memberNum);
+
     //로그인
     int login(@Param("member")Member member);
 

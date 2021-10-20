@@ -27,7 +27,7 @@ public interface MemberService {
     void editProfile(int memberNum, String introduce, String email);
 
     //이미지 업로드
-    void uploadImg(List<MultipartFile> files) throws IOException;
+    void uploadImg(List<MultipartFile> files, int memberNum, String beforeImg) throws IOException;
 
     
 }
