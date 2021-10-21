@@ -9,6 +9,14 @@
         SELECT * FROM post WHERE member_num = #{memberNum} ORDER BY post_num DESC;
     </select>
 
+    <!-- 페이징 글 목록 -->
+    <select id="getListPage" parameterType="hashMap" resultType="com.jeon.board.dto.Post">
+        SELECT * FROM post
+            WHERE member_num = #{listPage.memberNum}
+                ORDER BY post_num DESC
+                    limit #{listPage.displayPost}, #{listPage.postNum};
+    </select>
+
     <!-- 카테고리 목록 -->
     <select id="getCategory" resultType="HashMap">
         SELECT category name, count(category) cnt FROM post

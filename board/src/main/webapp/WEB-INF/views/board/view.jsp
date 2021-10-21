@@ -84,7 +84,7 @@
             if (val == 'back') {
                 back_fn();
             } else{
-                window.location.href = '/board/'+val;
+                window.location.href = '/board/'+val+'num=1';
             }
         });
         function back_fn(){

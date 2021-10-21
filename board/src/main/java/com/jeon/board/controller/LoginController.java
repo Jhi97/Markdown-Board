@@ -43,7 +43,7 @@ public class LoginController {
             session.setAttribute("memberId", member.getMember_id());
             session.setAttribute("memberNum", memberNum);
             session.setAttribute("profile", profile);
-            return "redirect:/board/main";
+            return "redirect:/board/main?num=1";
         } else{
             log.info("login Fail");
             session.setAttribute("member", null);

@@ -1,5 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <!doctype html>
 <html>
@@ -12,7 +13,7 @@
     <!-- Bootstrap CSS -->
     <link href="/node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 
-    <title>${member}'s Board</title>
+    <title>${memberId}'s Board</title>
 
     <style>
 
@@ -49,7 +50,10 @@
                     alert('error')
                 }
             });
-
+            $(document).ready(function(){
+               let num = ${page.num};
+               $('ul>li>')
+            });
             // $.ajax({
             //     url : "/board/write",
             //     type : "POST",
@@ -64,7 +68,6 @@
             //     }
             // });
         }
-
     </script>
 </head>
 <body>
@@ -79,10 +82,10 @@
                 </div>
                 <!-- 글 목록 출력 -->
                 <div class="text-body">
-                    <c:if test="${cnt == 0 || cnt == null}">
+                    <c:if test="${fn:length(post) == 0}">
                         <span>글이 없습니다. 글을 작성해 주세요.</span>
                     </c:if>
-                    <c:if test="${cnt != 0}">
+                    <c:if test="${fn:length(post) ne 0}">
                         <div class="table-responsive">
                             <table class="table table-striped">
                                 <thead>
@@ -104,6 +107,21 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
+                            <div style="display: flex; justify-content: center">
+                                <ul class="pagination">
+                                    <c:if test="${page.prev}">
+                                        <li class="page-item"><a class="page-link" href="/board/main?num=${page.startPageNum - 1}">이전</a></li>
+                                    </c:if>
+                                    <c:forEach begin="${page.startPageNum}" end="${page.endPageNum}" var="num">
+                                    <li class="page-item <c:if test="${num eq page.num}">active</c:if>">
+                                        <a class="page-link" href="/board/main?num=${num}">${num}</a>
+                                    </li>
+                                    </c:forEach>
+                                    <c:if test="${page.next}">
+                                        <li class="page-item"><a class="page-link" href="/board/main?num=${page.endPageNum + 1}">다음</a></li>
+                                    </c:if>
+                                </ul>
+                            </div>
                         </div>
                     </c:if>
                 </div>
@@ -112,7 +130,7 @@
             <!-- 카테고리 출력 -->
             <div class="col-2 category-area">
                 <div class="category-title border-bottom">카테고리</div>
-                <c:if test="${cnt != 0}">
+                <c:if test="${fn:length(post) ne 0}">
                     <div class="h-100 category-body">
                         <div class="categories"><a href="#">전체보기</a> (${allCount})</div>
                         <c:forEach items="${category}" var="category">

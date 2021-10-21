@@ -1,5 +1,6 @@
 package com.jeon.board.controller;
 
+import com.jeon.board.dto.Page;
 import com.jeon.board.dto.Post;
 import com.jeon.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -24,31 +25,43 @@ public class BoardController {
 
     private final BoardService boardService;
 
-    //메인화면
-    @GetMapping("/main")
-    public String getMain(Model model, HttpSession session) {
-        int memberNum = MemberController.getMemberNum(session);
-        Map<String, Object> result = boardService.getMain(memberNum);
-        List<Post> postList = (List<Post>) result.get("post");
-        List<String> categoryList = (List<String>) result.get("category");
-        int allCount = Integer.parseInt(result.get("allCount").toString());
-
-        //작성글 유무 확인
-        int cnt = postList.size();
-        log.info("cnt : "+ cnt);
-        //request 객체에 저장
-        model.addAttribute("post", postList);
-        model.addAttribute("category", categoryList);
-        model.addAttribute("cnt", cnt);
-        model.addAttribute("allCount", allCount);
-        return "/board/main";
-    }
+//    //메인화면
+//    @GetMapping("/main")
+//    public String getMain(Model model, HttpSession session) {
+//        int memberNum = MemberController.getMemberNum(session);
+//        Map<String, Object> result = boardService.getMain(memberNum);
+//        List<Post> postList = (List<Post>) result.get("post");
+//        List<String> categoryList = (List<String>) result.get("category");
+//        int allCount = Integer.parseInt(result.get("allCount").toString());
+//
+//        //작성글 유무 확인
+//        int cnt = postList.size();
+//        log.info("cnt : "+ cnt);
+//        //request 객체에 저장
+//        model.addAttribute("post", postList);
+//        model.addAttribute("category", categoryList);
+//        model.addAttribute("cnt", cnt);
+//        model.addAttribute("allCount", allCount);
+//        return "/board/main";
+//    }
 
     //메인화면 + 페이징 추가
-    @GetMapping("/listPage")
-    public void getListPage(Model model, HttpSession session) {
+    @GetMapping("/main")
+    public String getListPage(@RequestParam int num, Model model, HttpSession session) {
         int memberNum = MemberController.getMemberNum(session);
-        Map<String, Object> main = boardService.getMain(memberNum);
+        int allCount = boardService.getCount(memberNum);
+
+        Page page = new Page(num, allCount);
+
+        Map<String, Object> mainMap = boardService.getMain(page.getDisplayPost(), page.getPostNum(), memberNum);
+        List<Post> postList = (List<Post>) mainMap.get("post");
+        List<String> categoryList = (List<String>) mainMap.get("category");
+
+        model.addAttribute("post", postList);
+        model.addAttribute("category", categoryList);
+        model.addAttribute("allCount", allCount);
+        model.addAttribute("page", page);
+        return "/board/main";
     }
 
     //글쓰기

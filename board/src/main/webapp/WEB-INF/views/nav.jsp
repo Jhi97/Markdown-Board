@@ -5,7 +5,7 @@
             <%=session.getAttribute("memberId")%>'s Board
         </ul>
         <ul class="nav col-2 custom-font2" style="font-size: 19px;">
-            <li><a href="/board/main" class="nav-link px-3">홈</a></li>
+            <li><a href="/board/main?num=1" class="nav-link px-3">홈</a></li>
             <li><a href="/board/write" class="nav-link px-3">글쓰기</a></li>
         </ul>
 

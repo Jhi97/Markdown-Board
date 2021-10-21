@@ -19,14 +19,38 @@ import java.util.Map;
 public class BoardServiceImpl implements BoardService{
     private final BoardMapper boardMapper;
 
+//    @Override
+//    public Map<String, Object> getMain(int memberNum) {
+//        log.info("run BoardService getMain");
+//        Map<String, Object> map = new HashMap<>();
+//        map.put("post", boardMapper.getMain(memberNum));
+//        map.put("category", boardMapper.getCategory(memberNum));
+//        map.put("allCount", boardMapper.getCount(memberNum));
+//        return map;
+//    }
     @Override
-    public Map<String, Object> getMain(int memberNum) {
-        log.info("run BoardService getMain");
+    public Map<String, Object> getMain(int displayPost, int postNum, int memberNum) {
         Map<String, Object> map = new HashMap<>();
-        map.put("post", boardMapper.getMain(memberNum));
+        Map mainDate = mainInfoToData(displayPost, postNum, memberNum);
+        log.info(mainDate.toString());
+        map.put("post", boardMapper.getListPage(mainDate));
         map.put("category", boardMapper.getCategory(memberNum));
         map.put("allCount", boardMapper.getCount(memberNum));
         return map;
+    }
+
+    // 계정 게시글 전체 갯수 조회
+    @Override
+    public int getCount(int memberNum) {
+        return boardMapper.getCount(memberNum);
+    }
+    // Mapper에 전달할 main의 정보 생성
+    public Map<String, Integer> mainInfoToData(int displayPost, int postNum, int memberNum) {
+        Map<String, Integer> data = new HashMap<>();
+        data.put("displayPost", displayPost);
+        data.put("postNum", postNum);
+        data.put("memberNum", memberNum);
+        return data;
     }
 
     @Override
