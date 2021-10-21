@@ -11,14 +11,16 @@ import java.util.Map;
 
 @Mapper
 public interface BoardMapper {
-    // 게시글 목록
-    List<Post> getMain(@Param("memberNum") int memberNum);
     // 게시글 목록 + 페이징
-    List<Post> getListPage(@Param("listPage") Map data);
+    List<Post> getListPage(@Param("data") Map data);
+    // 페이징 + 검색
+    List<Post> getSearch(@Param("data") Map data);
     // 카테고리 목록
     List<HashMap<String, Object>> getCategory(@Param("memberNum") int memberNum);
     // 전체 게시글 수
     int getCount(@Param("memberNum")int memberNum);
+    // 검색에 의한 게시글 수
+    int getCountSearch(@Param("data") Map data);
     // 글쓰기
     void postWrite(@Param("post")Post post, @Param("memberNum") int memberNum);
     //글 상세보기

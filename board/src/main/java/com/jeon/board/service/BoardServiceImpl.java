@@ -6,8 +6,6 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,22 +18,27 @@ public class BoardServiceImpl implements BoardService{
     private final BoardMapper boardMapper;
 
 //    @Override
-//    public Map<String, Object> getMain(int memberNum) {
-//        log.info("run BoardService getMain");
+//    public Map<String, Object> getMain(int displayPost, int postNum, int memberNum) {
 //        Map<String, Object> map = new HashMap<>();
-//        map.put("post", boardMapper.getMain(memberNum));
+//        Map mainDate = mainInfoToData(displayPost, postNum, memberNum);
+//        log.info(mainDate.toString());
+//        map.put("post", boardMapper.getListPage(mainDate));
 //        map.put("category", boardMapper.getCategory(memberNum));
 //        map.put("allCount", boardMapper.getCount(memberNum));
 //        return map;
 //    }
+
     @Override
-    public Map<String, Object> getMain(int displayPost, int postNum, int memberNum) {
+    public Map<String, Object> getSearch(int displayPost, int postNum, String keyword, int memberNum) {
         Map<String, Object> map = new HashMap<>();
-        Map mainDate = mainInfoToData(displayPost, postNum, memberNum);
+        Map mainDate = mainInfoToDataV2(displayPost, postNum, keyword, memberNum);
         log.info(mainDate.toString());
-        map.put("post", boardMapper.getListPage(mainDate));
+        map.put("post", boardMapper.getSearch(mainDate));
         map.put("category", boardMapper.getCategory(memberNum));
         map.put("allCount", boardMapper.getCount(memberNum));
+        if (!keyword.isEmpty()) {
+            map.put("searchCount", boardMapper.getCountSearch(mainDate));
+        }
         return map;
     }
 
@@ -49,6 +52,15 @@ public class BoardServiceImpl implements BoardService{
         Map<String, Integer> data = new HashMap<>();
         data.put("displayPost", displayPost);
         data.put("postNum", postNum);
+        data.put("memberNum", memberNum);
+        return data;
+    }
+
+    public Map<String, Object> mainInfoToDataV2(int displayPost, int postNum, String keyword, int memberNum) {
+        Map<String, Object> data = new HashMap<>();
+        data.put("displayPost", displayPost);
+        data.put("postNum", postNum);
+        data.put("keyword", keyword);
         data.put("memberNum", memberNum);
         return data;
     }

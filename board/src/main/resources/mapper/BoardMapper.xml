@@ -4,17 +4,24 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.jeon.board.mapper.BoardMapper">
-    <!-- 글목록 -->
-    <select id="getMain" resultType="com.jeon.board.dto.Post">
-        SELECT * FROM post WHERE member_num = #{memberNum} ORDER BY post_num DESC;
-    </select>
 
     <!-- 페이징 글 목록 -->
     <select id="getListPage" parameterType="hashMap" resultType="com.jeon.board.dto.Post">
         SELECT * FROM post
-            WHERE member_num = #{listPage.memberNum}
+            WHERE member_num = #{data.memberNum}
                 ORDER BY post_num DESC
-                    limit #{listPage.displayPost}, #{listPage.postNum};
+                    limit #{data.displayPost}, #{data.postNum};
+    </select>
+
+    <!-- 검색 + 페이징 -->
+    <select id="getSearch" parameterType="hashMap" resultType="com.jeon.board.dto.Post">
+        SELECT * FROM post
+            WHERE member_num = #{data.memberNum}
+              <if test="data.keyword != null">
+                AND title LIKE CONCAT('%', #{data.keyword}, '%')
+              </if>
+                    ORDER BY post_num DESC
+                        limit #{data.displayPost}, #{data.postNum};
     </select>
 
     <!-- 카테고리 목록 -->
@@ -26,7 +33,17 @@
 
     <!-- 모든 글 개수 -->
     <select id="getCount" resultType="int">
-        SELECT count(*) FROM post WHERE member_num = #{memberNum};
+        SELECT count(*) FROM post
+            WHERE member_num = #{memberNum};
+    </select>
+
+    <!-- 검색에 의한 글 개수 -->
+    <select id="getCountSearch" parameterType="hashMap" resultType="int">
+        SELECT count(*) FROM post
+            WHERE member_num = #{data.memberNum}
+                <if test="data.keyword != null">
+                    AND title LIKE CONCAT('%', #{data.keyword}, '%')
+                </if>
     </select>
     
     <!-- 글쓰기 -->

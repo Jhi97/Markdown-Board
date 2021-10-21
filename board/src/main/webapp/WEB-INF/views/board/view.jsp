@@ -60,7 +60,7 @@
                 <button type="button" class="btn btn-secondary" id="back">뒤로</button>
             </div>
             <div class="btn_write">
-                <button type="button" class="btn btn-primary" id="write">글쓰기</button>
+                <button type="button" class="btn btn-primary" id="write">수정</button>
             </div>
         </footer>
     </div>
@@ -84,7 +84,7 @@
             if (val == 'back') {
                 back_fn();
             } else{
-                window.location.href = '/board/'+val+'num=1';
+                window.location.href = '/board/'+val;
             }
         });
         function back_fn(){

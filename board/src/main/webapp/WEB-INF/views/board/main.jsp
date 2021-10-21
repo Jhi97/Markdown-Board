@@ -34,6 +34,13 @@
         .categories{
             margin-bottom: 5px;
         }
+        .center-align{
+            display: flex;
+            justify-content: center;
+        }
+        .search{
+            width: 25%;
+        }
     </style>
     <script>
         function cate_click_fn(ths){
@@ -50,10 +57,7 @@
                     alert('error')
                 }
             });
-            $(document).ready(function(){
-               let num = ${page.num};
-               $('ul>li>')
-            });
+
             // $.ajax({
             //     url : "/board/write",
             //     type : "POST",
@@ -68,6 +72,12 @@
             //     }
             // });
         }
+        $(document).ready(function(){
+            $('#searchBtn').click(function(){
+                let keyword = $('#search').val();
+                location.href="/board/main?num=1&keyword="+keyword;
+            });
+        });
     </script>
 </head>
 <body>
@@ -83,7 +93,7 @@
                 <!-- 글 목록 출력 -->
                 <div class="text-body">
                     <c:if test="${fn:length(post) == 0}">
-                        <span>글이 없습니다. 글을 작성해 주세요.</span>
+                        <span>게시글이 없습니다.</span>
                     </c:if>
                     <c:if test="${fn:length(post) ne 0}">
                         <div class="table-responsive">
@@ -107,21 +117,31 @@
                                 </c:forEach>
                                 </tbody>
                             </table>
-                            <div style="display: flex; justify-content: center">
-                                <ul class="pagination">
-                                    <c:if test="${page.prev}">
-                                        <li class="page-item"><a class="page-link" href="/board/main?num=${page.startPageNum - 1}">이전</a></li>
-                                    </c:if>
-                                    <c:forEach begin="${page.startPageNum}" end="${page.endPageNum}" var="num">
-                                    <li class="page-item <c:if test="${num eq page.num}">active</c:if>">
-                                        <a class="page-link" href="/board/main?num=${num}">${num}</a>
-                                    </li>
-                                    </c:forEach>
-                                    <c:if test="${page.next}">
-                                        <li class="page-item"><a class="page-link" href="/board/main?num=${page.endPageNum + 1}">다음</a></li>
-                                    </c:if>
-                                </ul>
+                            <!-- 페이징 및 검색 -->
+                            <div class="center-align">
+                                <div>
+                                    <ul class="pagination">
+                                        <c:if test="${page.prev}">
+                                            <li class="page-item"><a class="page-link" href="/board/main?num=${page.startPageNum - 1}">이전</a></li>
+                                        </c:if>
+                                        <c:forEach begin="${page.startPageNum}" end="${page.endPageNum}" var="num">
+                                            <li class="page-item <c:if test="${num eq page.num}">active</c:if>">
+                                                <a class="page-link" href="/board/main?num=${num}&keyword=${keyword}">${num}</a>
+                                            </li>
+                                        </c:forEach>
+                                        <c:if test="${page.next}">
+                                            <li class="page-item"><a class="page-link" href="/board/main?num=${page.endPageNum + 1}">다음</a></li>
+                                        </c:if>
+                                    </ul>
+                                </div>
                             </div>
+                            <div class="center-align">
+                                <div class="input-group input-group-sm mb-3 search">
+                                    <input type="text" class="form-control" id="search">
+                                    <button class="btn btn-outline-primary" type="button" id="searchBtn" value="${keyword}">검색</button>
+                                </div>
+                            </div>
+                            <!-- 페이징 및 검색 끝-->
                         </div>
                     </c:if>
                 </div>

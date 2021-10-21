@@ -46,14 +46,40 @@ public class BoardController {
 //    }
 
     //메인화면 + 페이징 추가
+//    @GetMapping("/main")
+//    public String getMain(@RequestParam int num, Model model, HttpSession session) {
+//        int memberNum = MemberController.getMemberNum(session);
+//        int allCount = boardService.getCount(memberNum);
+//
+//        Page page = new Page(num, allCount);
+//
+//        Map<String, Object> mainMap = boardService.getMain(page.getDisplayPost(), page.getPostNum(), memberNum);
+//        List<Post> postList = (List<Post>) mainMap.get("post");
+//        List<String> categoryList = (List<String>) mainMap.get("category");
+//
+//        model.addAttribute("post", postList);
+//        model.addAttribute("category", categoryList);
+//        model.addAttribute("allCount", allCount);
+//        model.addAttribute("page", page);
+//        return "/board/main";
+//    }
+
     @GetMapping("/main")
-    public String getListPage(@RequestParam int num, Model model, HttpSession session) {
+    public String getSearch(@RequestParam(defaultValue = "1") int num, @RequestParam(defaultValue = "") String keyword,
+                            Model model, HttpSession session) {
         int memberNum = MemberController.getMemberNum(session);
         int allCount = boardService.getCount(memberNum);
 
         Page page = new Page(num, allCount);
+        Map<String, Object> mainMap = boardService.getSearch(page.getDisplayPost(), page.getPostNum(), keyword, memberNum);
+        //검색 입력시 페이징 조정
+        if (!keyword.isEmpty()) {
+            int searchCount = Integer.parseInt(mainMap.get("searchCount").toString());
+            log.info("searchCount : " + searchCount);
+            page.setCount(searchCount);
+        }
 
-        Map<String, Object> mainMap = boardService.getMain(page.getDisplayPost(), page.getPostNum(), memberNum);
+
         List<Post> postList = (List<Post>) mainMap.get("post");
         List<String> categoryList = (List<String>) mainMap.get("category");
 
@@ -61,6 +87,8 @@ public class BoardController {
         model.addAttribute("category", categoryList);
         model.addAttribute("allCount", allCount);
         model.addAttribute("page", page);
+        model.addAttribute("keyword", keyword);
+
         return "/board/main";
     }
 
@@ -69,7 +97,7 @@ public class BoardController {
     public String getWrite(Model model, HttpSession session) {
         int memberNum = MemberController.getMemberNum(session);
         String[] category = boardService.getCategory(memberNum);
-        model.addAttribute("cate//gories", category);
+        model.addAttribute("categories", category);
         return "/board/write";
     }
 

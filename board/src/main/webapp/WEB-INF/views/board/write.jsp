@@ -21,6 +21,9 @@
         header {
             margin-bottom: 0px;
         }
+        .input-group{
+            height: 50px;
+        }
     </style>
 </head>
 <body>
@@ -28,7 +31,7 @@
         <%@include file="../nav.jsp"%>
     </header>
     <div class="container">
-        <div class="input-group" style="height: 50px">
+        <div class="input-group">
             <input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력하세요">
             <button type="button" id="cateDown" class="btn btn-outline-secondary dropdown-toggle dropdown-toggle-split" data-bs-toggle="dropdown" aria-expanded="false">
                 <span name="category" id="category">카테고리 선택</span>
