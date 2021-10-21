@@ -7,7 +7,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -25,6 +27,17 @@ public class BoardServiceImpl implements BoardService{
         map.put("category", boardMapper.getCategory(memberNum));
         map.put("allCount", boardMapper.getCount(memberNum));
         return map;
+    }
+
+    @Override
+    public String[] getCategory(int memberNum) {
+        List<HashMap<String, Object>> categoryData = boardMapper.getCategory(memberNum);
+        int size = categoryData.size();
+        String[] categoryList = new String[size];
+        for (int i = 0; i < size; i++) {
+            categoryList[i] = categoryData.get(i).get("name").toString();
+        }
+        return categoryList;
     }
 
     @Override

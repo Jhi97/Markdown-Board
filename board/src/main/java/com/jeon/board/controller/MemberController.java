@@ -9,6 +9,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -26,8 +27,7 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    public static int getMemberNum(HttpServletRequest request) {
-        HttpSession session = request.getSession();
+    public static int getMemberNum(HttpSession session) {
         return Integer.parseInt(session.getAttribute("memberNum").toString());
     }
 
@@ -53,37 +53,37 @@ public class MemberController {
     }
     //프로필 페이지
     @GetMapping("/profile")
-    public String getProfile(HttpServletRequest request) {
-        Map<String, Object> map = memberService.getMember(getMemberNum(request));
+    public String getProfile(HttpSession session, Model model) {
+        Map<String, Object> map = memberService.getMember(getMemberNum(session));
         Member member = (Member) map.get("member");
         Profile profile = (Profile) map.get("profile");
         int allCount = Integer.parseInt(map.get("allCount").toString());
 
-        request.setAttribute("member", member);
-        request.setAttribute("allCount", allCount);
-        request.getSession().setAttribute("profile", profile);
+        model.addAttribute("member", member);
+        model.addAttribute("allCount", allCount);
+        session.setAttribute("profile", profile);
         return "/member/profile";
     }
 
     @PostMapping("/profile/edit")
     @ResponseBody
     public String editProfile(@RequestBody Map<String,Object> json,
-                              HttpServletRequest request) {
+                              HttpSession session) {
         String email = json.get("email").toString();
         String introduce = json.get("introduce").toString();
         log.info("email: " + email + "introduce: "+ introduce);
-        int memberNum = getMemberNum(request);
+        int memberNum = getMemberNum(session);
         memberService.editProfile(memberNum, introduce, email);
         return "/member/profile";
     }
 
     @PostMapping("/profile/alterImg")
     @ResponseBody
-    public ResponseEntity<?> alterImage(@RequestParam("file") MultipartFile uploadImg, HttpServletRequest request) {
+    public ResponseEntity<?> alterImage(@RequestParam("file") MultipartFile uploadImg, HttpSession session) {
         log.info("run upload");
         // 회원 번호 및 프로필 조회
-        int memberNum = getMemberNum(request);
-        Profile profile =(Profile) request.getSession().getAttribute("profile");
+        int memberNum = getMemberNum(session);
+        Profile profile =(Profile) session.getAttribute("profile");
         String beforeImg = profile.getMember_img();
 
         if (uploadImg.isEmpty()) {

@@ -36,6 +36,10 @@
             <ul class="dropdown-menu dropdown-menu-end">
                 <li><a class="dropdown-item cateList" href="#">선택안함</a></li>
                 <li><hr class="dropdown-divider"></li>
+                <c:forEach items="${categories}" var="category">
+                    <li><a class="dropdown-item cateList" href="#">${category}</a></li>
+                </c:forEach>
+                <li><hr class="dropdown-divider"></li>
                 <li><a class="dropdown-item" id="createCate" href="#">새 카테고리</a></li>
             </ul>
             <button type="button" class="btn btn-primary" id="postSubmit" name="postSubmit">작성완료</button>

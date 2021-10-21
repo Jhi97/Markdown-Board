@@ -5,9 +5,9 @@ import com.jeon.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
@@ -26,9 +26,8 @@ public class BoardController {
 
     //메인화면
     @GetMapping("/main")
-    public String getMain(HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        int memberNum = Integer.parseInt(session.getAttribute("memberNum").toString());
+    public String getMain(Model model, HttpSession session) {
+        int memberNum = MemberController.getMemberNum(session);
         Map<String, Object> result = boardService.getMain(memberNum);
         List<Post> postList = (List<Post>) result.get("post");
         List<String> categoryList = (List<String>) result.get("category");
@@ -38,25 +37,34 @@ public class BoardController {
         int cnt = postList.size();
         log.info("cnt : "+ cnt);
         //request 객체에 저장
-        request.setAttribute("post", postList);
-        request.setAttribute("category", categoryList);
-        request.setAttribute("cnt", cnt);
-        request.setAttribute("allCount", allCount);
+        model.addAttribute("post", postList);
+        model.addAttribute("category", categoryList);
+        model.addAttribute("cnt", cnt);
+        model.addAttribute("allCount", allCount);
         return "/board/main";
+    }
+
+    //메인화면 + 페이징 추가
+    @GetMapping("/listPage")
+    public void getListPage(Model model, HttpSession session) {
+        int memberNum = MemberController.getMemberNum(session);
+        Map<String, Object> main = boardService.getMain(memberNum);
     }
 
     //글쓰기
     @GetMapping("/write")
-    public String getWrite() {
+    public String getWrite(Model model, HttpSession session) {
+        int memberNum = MemberController.getMemberNum(session);
+        String[] category = boardService.getCategory(memberNum);
+        model.addAttribute("cate//gories", category);
         return "/board/write";
     }
 
     //작성완료
     @PostMapping("/write")
     @ResponseBody
-    public String postWrite(@RequestBody Post post, HttpServletRequest request) {
-        HttpSession session = request.getSession();
-        int memberNum = Integer.parseInt(session.getAttribute("memberNum").toString());
+    public String postWrite(@RequestBody Post post, HttpSession session) {
+        int memberNum = MemberController.getMemberNum(session);
         log.info("member: " + memberNum);
         log.info("post: " + post.toString());
         boardService.postWrite(post, memberNum);
@@ -66,13 +74,14 @@ public class BoardController {
     //글 상세보기
     @GetMapping("/view")
     public String getView(@RequestParam("num") int num,
-                          HttpServletRequest request, HttpServletResponse response) throws IOException {
-        HttpSession session = request.getSession();
-        int memberNum = Integer.parseInt(session.getAttribute("memberNum").toString());
+                          Model model,
+                          HttpSession session,
+                          HttpServletResponse response) throws IOException {
+        int memberNum = MemberController.getMemberNum(session);
         try {
             Post post = boardService.getView(num, memberNum);
-            request.setAttribute("post", post);
-            //다른 아이디로 접근 시 에러
+            model.addAttribute("post", post);
+        //다른 아이디로 접근 시 에러
         } catch (IllegalAccessException e) {
             response.setContentType("text/html; charset=UTF-8");
             PrintWriter out = response.getWriter();

@@ -18,8 +18,6 @@ public interface MemberService {
     //로그인
     int login(Member member);
 
-    //회원 전체 게시글 수 조회
-
     //회원 정보 조회
     Map<String, Object> getMember(int memberNum);
 
