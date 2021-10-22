@@ -48,20 +48,6 @@
                 let keyword = $('#search').val();
                 location.href="/board/main?num=1&keyword="+keyword;
             });
-            $('#test').click(function () {
-                alert('클릭');
-                $.ajax({
-                    url : "/board/main?category=두 번째",
-                    type : "get",
-                    data : {category: '33'},
-                    success : function(data){
-                        alert('success');
-                    },
-                    error : function(){
-                        alert('error')
-                    }
-                });
-            });
         });
     </script>
 </head>
@@ -135,16 +121,16 @@
             <!-- 카테고리 출력 -->
             <div class="col-2 category-area">
                 <div class="category-title border-bottom">카테고리</div>
-                <c:if test="${fn:length(post) ne 0}">
-                    <div class="h-100 category-body"><!-- /board/main?keyword=${keyword} -->
-                        <div class="categories"><a id="test" href="#">전체보기</a> (${allCount})</div>
-                        <c:forEach items="${categories}" var="categories">
-                            <c:if test="${categories!=null}">
-                                <div class="categories"><a href="/board/main?keyword=${keyword}&category=${categories.name}">${categories.name}</a> (${categories.cnt})</div>
-                            </c:if>
-                        </c:forEach>
+                    <div class="h-100 category-body">
+                        <div class="categories"><a id="test" href="/board/main?keyword=${keyword}&category=">전체보기</a> (${allCount})</div>
+                        <c:if test="${fn:length(post) ne 0}">
+                            <c:forEach items="${categories}" var="categories">
+                                <c:if test="${categories!=null}">
+                                    <div class="categories"><a href="/board/main?keyword=${keyword}&category=${categories.name}">${categories.name}</a> (${categories.cnt})</div>
+                                </c:if>
+                            </c:forEach>
+                        </c:if>
                     </div>
-                </c:if>
             </div>
             <!-- 카테고리 출력 끝-->
 

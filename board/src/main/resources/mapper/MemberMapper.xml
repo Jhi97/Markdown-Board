@@ -18,7 +18,7 @@
 
     <!-- 프로필 생성 -->
     <insert id="joinProfile">
-        INSERT INTO profile(profile_num) VALUE(#{memberNum});
+        INSERT INTO profile(profile_num, member_img) VALUE(#{memberNum}, 'personal.jpg');
     </insert>
 
     <!-- 프로필 조회 -->

@@ -56,14 +56,31 @@
 
         <footer>
             <div class="btn_group">
-                <button type="button" class="btn btn-primary" id="main">홈으로</button>
-                <button type="button" class="btn btn-secondary" id="back">뒤로</button>
+                <button type="button" class="btn btn-primary locationBtn" id="main">홈으로</button>
+                <button type="button" class="btn btn-secondary locationBtn" id="back">뒤로</button>
             </div>
             <div class="btn_write">
-                <button type="button" class="btn btn-primary" id="modify">수정</button>
-                <button type="button" class="btn btn-primary" id="delete">삭제</button>
+                <button type="button" class="btn btn-primary locationBtn" id="modify">수정</button>
+                <button type="button" class="btn btn-primary locationBtn" id="delete">삭제</button>
             </div>
         </footer>
+    </div>
+    <!-- Modal -->
+    <div class="modal fade" id="alertModal">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">알림</h5>
+                </div>
+                <div class="modal-body">
+                    <p id="alert">해당 게시글을 삭제하시겠습니까?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" id="warningConfirm" data-bs-dismiss="modal">확인</button>
+                    <button type="button" class="btn btn-secondary" id="cancel" data-bs-dismiss="modal">취소</button>
+                </div>
+            </div>
+        </div>
     </div>
 
 
@@ -82,20 +99,38 @@
     $(document).ready(function(){
         //게시글 번호
         let num = ${post.post_num};
-        $('button').click(function () {
+        $('.locationBtn').click(function () {
             let val = $(this).attr("id");
+            //뒤로가기
             if (val == 'back') {
                 back_fn();
+            //홈으로
             } else if(val == 'main'){
                 window.location.href = '/board/'+val;
+            //삭제
+            } else if(val == 'delete'){
+                let modal = $('#alertModal');
+                modal.modal('show');
+                $('#warningConfirm').click(function(){
+                    $.ajax({
+                        url: "/board/view/"+${post.post_num},
+                        type: "delete",
+                        success(data) {
+                            window.location.replace(data);
+                        },error(data){
+                            alert('알수없는 오류');
+                        }
+                    });
+                });
+            //수정
             } else{
-                //수정 및 삭제
                 window.location.href = '/board/'+val+'?num='+num;
             }
             function back_fn(){
                 window.history.back();
             }
         });
+
     });
 </script>
 </body>

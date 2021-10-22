@@ -33,8 +33,8 @@ public class BoardServiceImpl implements BoardService{
         Map<String, Object> map = new HashMap<>();
         Map mainDate = mainInfoToDataV2(displayPost, postNum, keyword, categoryParam, memberNum);
         log.info(mainDate.toString());
-        map.put("post", boardMapper.getSearch(mainDate));
-        map.put("category", boardMapper.getCategory(memberNum));
+        map.put("post", boardMapper.getMain(mainDate));
+        map.put("category", boardMapper.getCategory(keyword, memberNum));
         map.put("allCount", boardMapper.getCount(memberNum));
         if (!keyword.isEmpty() || !categoryParam.isEmpty()) {
             log.info("CountSearch run");
@@ -61,7 +61,7 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public String[] getCategory(int memberNum) {
-        List<HashMap<String, Object>> categoryData = boardMapper.getCategory(memberNum);
+        List<HashMap<String, Object>> categoryData = boardMapper.getCategory(new String(""), memberNum);
         int size = categoryData.size();
         String[] categoryList = new String[size];
         for (int i = 0; i < size; i++) {
@@ -94,8 +94,18 @@ public class BoardServiceImpl implements BoardService{
         try {
             boardMapper.putModify(post, memberNum);
         } catch (Exception e) {
-            IllegalAccessException userError = new IllegalAccessException();
-            throw userError;
+            IllegalAccessException modifyError = new IllegalAccessException();
+            throw modifyError;
+        }
+    }
+
+    @Override
+    public void delete(int postNum, int memberNum) throws Exception {
+        try {
+            boardMapper.delete(postNum, memberNum);
+        } catch (Exception e) {
+            IllegalAccessException deleteError = new IllegalAccessException();
+            throw deleteError;
         }
     }
 }

@@ -43,11 +43,20 @@ public class BoardController {
         }
 
         List<Post> postList = (List<Post>) mainMap.get("post");
-        List<String> categoryList = (List<String>) mainMap.get("category");
-
+        List<Map> categoryList = (List<Map>) mainMap.get("category");
         model.addAttribute("post", postList);
         model.addAttribute("categories", categoryList);
-        model.addAttribute("allCount", allCount);
+        //검색어 존재 시 카테고리 총 게시글 수정
+        if (keyword.isEmpty()) {
+            log.info("empty");
+            model.addAttribute("allCount", allCount);
+        }else{
+            int categoryCnt = 0;
+            for (int i = 0; i < categoryList.size(); i++) {
+                categoryCnt += Integer.parseInt(categoryList.get(i).get("cnt").toString());
+            }
+            model.addAttribute("allCount", categoryCnt);
+        }
         model.addAttribute("page", page);
         model.addAttribute("keyword", keyword);
         model.addAttribute("categoryParam", category);
@@ -121,9 +130,9 @@ public class BoardController {
     }
 
     //수정완료
-    @PutMapping("/modify/{num}")
+    @PutMapping("/view/{postNum}")
     @ResponseBody
-    public String putModify(@PathVariable("num") int num,
+    public String putModify(@PathVariable int postNum,
                             @RequestBody Post post, HttpSession session) throws Exception {
         int memberNum = MemberController.getMemberNum(session);
         try {
@@ -132,15 +141,22 @@ public class BoardController {
         } catch (IllegalAccessException e) {
             return "수정 중 에러가 발생했습니다.";
         }
-
-        return "/board/view?num="+num;
+        return "/board/view?num="+postNum;
     }
 
     //게시글 삭제
-    @DeleteMapping("/delete")
-    public String postDelete(@RequestParam int num, HttpSession session) {
+    @DeleteMapping("/view/{postNum}")
+    @ResponseBody
+    public String postDelete(@PathVariable int postNum, HttpSession session, HttpServletResponse response) throws Exception {
         int memberNum = MemberController.getMemberNum(session);
-
+        try {
+            boardService.delete(postNum, memberNum);
+        } catch (Exception e) {
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('잘못된 접근입니다.');window.location.replace('/board/main');</script>");
+            out.flush();
+        }
         return "/board/main";
     }
 }

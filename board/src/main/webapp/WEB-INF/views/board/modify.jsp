@@ -165,17 +165,16 @@
             };
             //ajax를 통한 게시글 저장
             $.ajax({
-                url : "/board/modify/"+${post.post_num},
+                url : "/board/view/"+${post.post_num},
                 type : "put",
                 data : JSON.stringify(data),
                 contentType: 'application/json; charset:UTF-8',
                 success: function (data){
                     // 이전 정보를 저장하지 않도록 replace 사용
-                    // console.log(data);
                     window.location.replace(data);
                 },
                 error: function() {
-                    alert('error');
+                    alert('알수없는 에러');
                 }
             });
         });

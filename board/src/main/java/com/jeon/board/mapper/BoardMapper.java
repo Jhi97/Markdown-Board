@@ -11,12 +11,10 @@ import java.util.Map;
 
 @Mapper
 public interface BoardMapper {
-    // 게시글 목록 + 페이징
-    List<Post> getListPage(@Param("data") Map data);
-    // 페이징 + 검색
-    List<Post> getSearch(@Param("data") Map data);
+    // 메인페이지
+    List<Post> getMain(@Param("data") Map data);
     // 카테고리 목록
-    List<HashMap<String, Object>> getCategory(@Param("memberNum") int memberNum);
+    List<HashMap<String, Object>> getCategory(@Param("keyword") String keyword, @Param("memberNum") int memberNum);
     // 전체 게시글 수
     int getCount(@Param("memberNum")int memberNum);
     // 검색에 의한 게시글 수
@@ -27,4 +25,6 @@ public interface BoardMapper {
     Post getView(@Param("post_num")int num);
     //글 수정
     void putModify(@Param("post") Post post, @Param("memberNum") int memberNum);
+    //글 삭제
+    void delete(@Param("postNum") int postNum, @Param("memberNum") int memberNum);
 }

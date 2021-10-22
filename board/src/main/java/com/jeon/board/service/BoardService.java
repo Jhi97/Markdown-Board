@@ -7,10 +7,7 @@ import java.util.Map;
 
 
 public interface BoardService {
-//    //글 목록 + 페이징
-//    Map<String, Object> getMain(int displayPost, int postNum, int memberNum);
-
-    // 페이징 + 검색
+    // 메인페이지
     Map<String, Object> getMain(int displayPost, int postNum, String keyword, String categoryParam, int memberNum);
 
     //전체 게시물 갯수
@@ -27,4 +24,7 @@ public interface BoardService {
 
     //글 수정하기
     void putModify(Post post, int memberNum) throws Exception;
+
+    //글 삭제하기
+    void delete(int postNum, int memberNum) throws Exception;
 }

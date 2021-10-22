@@ -5,16 +5,8 @@
 
 <mapper namespace="com.jeon.board.mapper.BoardMapper">
 
-    <!-- 페이징 글 목록 -->
-    <select id="getListPage" parameterType="hashMap" resultType="com.jeon.board.dto.Post">
-        SELECT * FROM post
-            WHERE member_num = #{data.memberNum}
-                ORDER BY post_num DESC
-                    limit #{data.displayPost}, #{data.postNum};
-    </select>
-
-    <!-- 검색 + 페이징 -->
-    <select id="getSearch" parameterType="hashMap" resultType="com.jeon.board.dto.Post">
+    <!-- 메인페이지 게시글 리스트 -->
+    <select id="getMain" parameterType="hashMap" resultType="com.jeon.board.dto.Post">
         SELECT * FROM post
             WHERE member_num = #{data.memberNum}
                 <if test="data.keyword != null">
@@ -31,6 +23,9 @@
     <select id="getCategory" resultType="HashMap">
         SELECT category name, count(category) cnt FROM post
             WHERE member_num = #{memberNum}
+            <if test="keyword != null">
+                AND title LIKE CONCAT('%', #{keyword}, '%')
+            </if>
                 GROUP BY category HAVING category IS NOT NULL;
     </select>
 
@@ -69,4 +64,9 @@
             title = #{post.title}, category = #{post.category}, contents = #{post.contents}
         WHERE post_num = #{post.post_num} AND member_num = #{memberNum};
     </update>
+
+    <!-- 글 삭제 -->
+    <delete id="delete">
+        DELETE FROM post WHERE post_num = #{postNum} AND member_num = #{memberNum};
+    </delete>
 </mapper>
