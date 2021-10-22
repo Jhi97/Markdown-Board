@@ -24,4 +24,7 @@ public interface BoardService {
 
     //글 상세보기
     Post getView(int num, int memberNum) throws IllegalAccessException;
+
+    //글 수정하기
+    void putModify(Post post, int memberNum) throws Exception;
 }

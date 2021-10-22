@@ -80,17 +80,22 @@
         initialValue: contents
     });
     $(document).ready(function(){
+        //게시글 번호
+        let num = ${post.post_num};
         $('button').click(function () {
             let val = $(this).attr("id");
             if (val == 'back') {
                 back_fn();
-            } else{
+            } else if(val == 'main'){
                 window.location.href = '/board/'+val;
+            } else{
+                //수정 및 삭제
+                window.location.href = '/board/'+val+'?num='+num;
+            }
+            function back_fn(){
+                window.history.back();
             }
         });
-        function back_fn(){
-            window.history.back();
-        }
     });
 </script>
 </body>

@@ -25,4 +25,6 @@ public interface BoardMapper {
     void postWrite(@Param("post")Post post, @Param("memberNum") int memberNum);
     //글 상세보기
     Post getView(@Param("post_num")int num);
+    //글 수정
+    void putModify(@Param("post") Post post, @Param("memberNum") int memberNum);
 }

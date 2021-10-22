@@ -62,4 +62,11 @@
     <select id="getView" resultType="com.jeon.board.dto.Post">
         SELECT * FROM post WHERE post_num = #{post_num};
     </select>
+
+    <!-- 글 수정 -->
+    <update id="putModify">
+        UPDATE post SET
+            title = #{post.title}, category = #{post.category}, contents = #{post.contents}
+        WHERE post_num = #{post.post_num} AND member_num = #{memberNum};
+    </update>
 </mapper>

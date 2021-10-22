@@ -88,4 +88,14 @@ public class BoardServiceImpl implements BoardService{
             return post;
         }
     }
+
+    @Override
+    public void putModify(Post post, int memberNum) throws Exception {
+        try {
+            boardMapper.putModify(post, memberNum);
+        } catch (Exception e) {
+            IllegalAccessException userError = new IllegalAccessException();
+            throw userError;
+        }
+    }
 }

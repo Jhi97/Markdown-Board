@@ -25,45 +25,6 @@ public class BoardController {
 
     private final BoardService boardService;
 
-//    //메인화면
-//    @GetMapping("/main")
-//    public String getMain(Model model, HttpSession session) {
-//        int memberNum = MemberController.getMemberNum(session);
-//        Map<String, Object> result = boardService.getMain(memberNum);
-//        List<Post> postList = (List<Post>) result.get("post");
-//        List<String> categoryList = (List<String>) result.get("category");
-//        int allCount = Integer.parseInt(result.get("allCount").toString());
-//
-//        //작성글 유무 확인
-//        int cnt = postList.size();
-//        log.info("cnt : "+ cnt);
-//        //request 객체에 저장
-//        model.addAttribute("post", postList);
-//        model.addAttribute("category", categoryList);
-//        model.addAttribute("cnt", cnt);
-//        model.addAttribute("allCount", allCount);
-//        return "/board/main";
-//    }
-
-    //메인화면 + 페이징 추가
-//    @GetMapping("/main")
-//    public String getMain(@RequestParam int num, Model model, HttpSession session) {
-//        int memberNum = MemberController.getMemberNum(session);
-//        int allCount = boardService.getCount(memberNum);
-//
-//        Page page = new Page(num, allCount);
-//
-//        Map<String, Object> mainMap = boardService.getMain(page.getDisplayPost(), page.getPostNum(), memberNum);
-//        List<Post> postList = (List<Post>) mainMap.get("post");
-//        List<String> categoryList = (List<String>) mainMap.get("category");
-//
-//        model.addAttribute("post", postList);
-//        model.addAttribute("category", categoryList);
-//        model.addAttribute("allCount", allCount);
-//        model.addAttribute("page", page);
-//        return "/board/main";
-//    }
-
     @GetMapping("/main")
     public String getSearch(@RequestParam(defaultValue = "1") int num,
                             @RequestParam(defaultValue = "") String keyword,
@@ -80,7 +41,6 @@ public class BoardController {
             log.info("searchCount : " + searchCount);
             page.setCount(searchCount);
         }
-
 
         List<Post> postList = (List<Post>) mainMap.get("post");
         List<String> categoryList = (List<String>) mainMap.get("category");
@@ -117,21 +77,11 @@ public class BoardController {
 
     //글 상세보기
     @GetMapping("/view")
-    public String getView(@RequestParam("num") int num,
+    public String getView(@RequestParam int num,
                           Model model,
                           HttpSession session,
                           HttpServletResponse response) throws IOException {
-        int memberNum = MemberController.getMemberNum(session);
-        try {
-            Post post = boardService.getView(num, memberNum);
-            model.addAttribute("post", post);
-        //다른 아이디로 접근 시 에러
-        } catch (IllegalAccessException e) {
-            response.setContentType("text/html; charset=UTF-8");
-            PrintWriter out = response.getWriter();
-            out.println("<script>alert('잘못된 접근입니다.');location.href='/board/main';</script>");
-            out.flush();
-        }
+        setBoardView(num, model, session, response);
         return "/board/view";
     }
 
@@ -140,6 +90,57 @@ public class BoardController {
     @ResponseBody
     public String categoryList(@RequestParam("category") String category) {
         log.info(category);
+        return "/board/main";
+    }
+
+    // 게시글 수정화면
+    @GetMapping("/modify")
+    public String getModify(@RequestParam int num,
+                            Model model,
+                            HttpSession session,
+                            HttpServletResponse response) throws IOException {
+        int memberNum = MemberController.getMemberNum(session);
+        setBoardView(num, model, session, response);
+        String[] category = boardService.getCategory(memberNum);
+        model.addAttribute("categories", category);
+        return "/board/modify";
+    }
+    // 사용자 검증 및 게시글 상세정보
+    public void setBoardView(int num, Model model, HttpSession session, HttpServletResponse response) throws IOException {
+        int memberNum = MemberController.getMemberNum(session);
+        try {
+            Post post = boardService.getView(num, memberNum);
+            model.addAttribute("post", post);
+            //다른 아이디로 접근 시 에러
+        } catch (IllegalAccessException e) {
+            response.setContentType("text/html; charset=UTF-8");
+            PrintWriter out = response.getWriter();
+            out.println("<script>alert('잘못된 접근입니다.');location.href='/board/main';</script>");
+            out.flush();
+        }
+    }
+
+    //수정완료
+    @PutMapping("/modify/{num}")
+    @ResponseBody
+    public String putModify(@PathVariable("num") int num,
+                            @RequestBody Post post, HttpSession session) throws Exception {
+        int memberNum = MemberController.getMemberNum(session);
+        try {
+            boardService.putModify(post, memberNum);
+            //게시글 번호 또는 아이디 검증
+        } catch (IllegalAccessException e) {
+            return "수정 중 에러가 발생했습니다.";
+        }
+
+        return "/board/view?num="+num;
+    }
+
+    //게시글 삭제
+    @DeleteMapping("/delete")
+    public String postDelete(@RequestParam int num, HttpSession session) {
+        int memberNum = MemberController.getMemberNum(session);
+
         return "/board/main";
     }
 }
