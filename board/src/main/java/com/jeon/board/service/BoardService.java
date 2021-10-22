@@ -11,7 +11,7 @@ public interface BoardService {
 //    Map<String, Object> getMain(int displayPost, int postNum, int memberNum);
 
     // 페이징 + 검색
-    Map<String, Object> getSearch(int displayPost, int postNum, String keyword, int memberNum);
+    Map<String, Object> getMain(int displayPost, int postNum, String keyword, String categoryParam, int memberNum);
 
     //전체 게시물 갯수
     int getCount(int memberNum);

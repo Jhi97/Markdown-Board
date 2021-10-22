@@ -65,15 +65,17 @@ public class BoardController {
 //    }
 
     @GetMapping("/main")
-    public String getSearch(@RequestParam(defaultValue = "1") int num, @RequestParam(defaultValue = "") String keyword,
+    public String getSearch(@RequestParam(defaultValue = "1") int num,
+                            @RequestParam(defaultValue = "") String keyword,
+                            @RequestParam(defaultValue = "") String category,
                             Model model, HttpSession session) {
         int memberNum = MemberController.getMemberNum(session);
         int allCount = boardService.getCount(memberNum);
 
         Page page = new Page(num, allCount);
-        Map<String, Object> mainMap = boardService.getSearch(page.getDisplayPost(), page.getPostNum(), keyword, memberNum);
+        Map<String, Object> mainMap = boardService.getMain(page.getDisplayPost(), page.getPostNum(), keyword, category, memberNum);
         //검색 입력시 페이징 조정
-        if (!keyword.isEmpty()) {
+        if (!keyword.isEmpty() || !category.isEmpty()) {
             int searchCount = Integer.parseInt(mainMap.get("searchCount").toString());
             log.info("searchCount : " + searchCount);
             page.setCount(searchCount);
@@ -84,10 +86,11 @@ public class BoardController {
         List<String> categoryList = (List<String>) mainMap.get("category");
 
         model.addAttribute("post", postList);
-        model.addAttribute("category", categoryList);
+        model.addAttribute("categories", categoryList);
         model.addAttribute("allCount", allCount);
         model.addAttribute("page", page);
         model.addAttribute("keyword", keyword);
+        model.addAttribute("categoryParam", category);
 
         return "/board/main";
     }

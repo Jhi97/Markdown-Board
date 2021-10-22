@@ -43,39 +43,24 @@
         }
     </style>
     <script>
-        function cate_click_fn(ths){
-            let val = $(ths).text();
-            console.log(val);
-            $.ajax({
-                url : "/board/category",
-                type : "get",
-                data : {category: val},
-                success : function(data){
-                    alert('success');
-                },
-                error : function(){
-                    alert('error')
-                }
-            });
-
-            // $.ajax({
-            //     url : "/board/write",
-            //     type : "POST",
-            //     data : JSON.stringify(data),
-            //     contentType: 'application/json; charset:UTF-8',
-            //     success: function (data){
-            //         // 이전 정보를 저장하지 않도록 replace 사용
-            //         window.location.replace(data);
-            //     },
-            //     error: function() {
-            //         alert('error');
-            //     }
-            // });
-        }
         $(document).ready(function(){
             $('#searchBtn').click(function(){
                 let keyword = $('#search').val();
                 location.href="/board/main?num=1&keyword="+keyword;
+            });
+            $('#test').click(function () {
+                alert('클릭');
+                $.ajax({
+                    url : "/board/main?category=두 번째",
+                    type : "get",
+                    data : {category: '33'},
+                    success : function(data){
+                        alert('success');
+                    },
+                    error : function(){
+                        alert('error')
+                    }
+                });
             });
         });
     </script>
@@ -126,7 +111,7 @@
                                         </c:if>
                                         <c:forEach begin="${page.startPageNum}" end="${page.endPageNum}" var="num">
                                             <li class="page-item <c:if test="${num eq page.num}">active</c:if>">
-                                                <a class="page-link" href="/board/main?num=${num}&keyword=${keyword}">${num}</a>
+                                                <a class="page-link" href="/board/main?num=${num}&keyword=${keyword}&category=${categoryParam}">${num}</a>
                                             </li>
                                         </c:forEach>
                                         <c:if test="${page.next}">
@@ -137,8 +122,8 @@
                             </div>
                             <div class="center-align">
                                 <div class="input-group input-group-sm mb-3 search">
-                                    <input type="text" class="form-control" id="search">
-                                    <button class="btn btn-outline-primary" type="button" id="searchBtn" value="${keyword}">검색</button>
+                                    <input type="text" class="form-control" id="search" value="${keyword}">
+                                    <button class="btn btn-outline-primary" type="button" id="searchBtn">검색</button>
                                 </div>
                             </div>
                             <!-- 페이징 및 검색 끝-->
@@ -151,11 +136,11 @@
             <div class="col-2 category-area">
                 <div class="category-title border-bottom">카테고리</div>
                 <c:if test="${fn:length(post) ne 0}">
-                    <div class="h-100 category-body">
-                        <div class="categories"><a href="#">전체보기</a> (${allCount})</div>
-                        <c:forEach items="${category}" var="category">
-                            <c:if test="${category!=null}">
-                                <div class="categories"><a href="#" onclick="cate_click_fn(this);">${category.name}</a> (${category.cnt})</div>
+                    <div class="h-100 category-body"><!-- /board/main?keyword=${keyword} -->
+                        <div class="categories"><a id="test" href="#">전체보기</a> (${allCount})</div>
+                        <c:forEach items="${categories}" var="categories">
+                            <c:if test="${categories!=null}">
+                                <div class="categories"><a href="/board/main?keyword=${keyword}&category=${categories.name}">${categories.name}</a> (${categories.cnt})</div>
                             </c:if>
                         </c:forEach>
                     </div>

@@ -29,14 +29,15 @@ public class BoardServiceImpl implements BoardService{
 //    }
 
     @Override
-    public Map<String, Object> getSearch(int displayPost, int postNum, String keyword, int memberNum) {
+    public Map<String, Object> getMain(int displayPost, int postNum, String keyword, String categoryParam, int memberNum) {
         Map<String, Object> map = new HashMap<>();
-        Map mainDate = mainInfoToDataV2(displayPost, postNum, keyword, memberNum);
+        Map mainDate = mainInfoToDataV2(displayPost, postNum, keyword, categoryParam, memberNum);
         log.info(mainDate.toString());
         map.put("post", boardMapper.getSearch(mainDate));
         map.put("category", boardMapper.getCategory(memberNum));
         map.put("allCount", boardMapper.getCount(memberNum));
-        if (!keyword.isEmpty()) {
+        if (!keyword.isEmpty() || !categoryParam.isEmpty()) {
+            log.info("CountSearch run");
             map.put("searchCount", boardMapper.getCountSearch(mainDate));
         }
         return map;
@@ -48,19 +49,12 @@ public class BoardServiceImpl implements BoardService{
         return boardMapper.getCount(memberNum);
     }
     // Mapper에 전달할 main의 정보 생성
-    public Map<String, Integer> mainInfoToData(int displayPost, int postNum, int memberNum) {
-        Map<String, Integer> data = new HashMap<>();
-        data.put("displayPost", displayPost);
-        data.put("postNum", postNum);
-        data.put("memberNum", memberNum);
-        return data;
-    }
-
-    public Map<String, Object> mainInfoToDataV2(int displayPost, int postNum, String keyword, int memberNum) {
+    public Map<String, Object> mainInfoToDataV2(int displayPost, int postNum, String keyword, String categoryParam, int memberNum) {
         Map<String, Object> data = new HashMap<>();
         data.put("displayPost", displayPost);
         data.put("postNum", postNum);
         data.put("keyword", keyword);
+        data.put("category", categoryParam);
         data.put("memberNum", memberNum);
         return data;
     }

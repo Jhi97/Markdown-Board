@@ -17,9 +17,12 @@
     <select id="getSearch" parameterType="hashMap" resultType="com.jeon.board.dto.Post">
         SELECT * FROM post
             WHERE member_num = #{data.memberNum}
-              <if test="data.keyword != null">
-                AND title LIKE CONCAT('%', #{data.keyword}, '%')
-              </if>
+                <if test="data.keyword != null">
+                    AND title LIKE CONCAT('%', #{data.keyword}, '%')
+                </if>
+                <if test='!data.category.equals("")'>
+                    AND category = #{data.category}
+                </if>
                     ORDER BY post_num DESC
                         limit #{data.displayPost}, #{data.postNum};
     </select>
@@ -37,13 +40,16 @@
             WHERE member_num = #{memberNum};
     </select>
 
-    <!-- 검색에 의한 글 개수 -->
+    <!-- 검색&카테고리에 의한 글 개수 -->
     <select id="getCountSearch" parameterType="hashMap" resultType="int">
         SELECT count(*) FROM post
             WHERE member_num = #{data.memberNum}
                 <if test="data.keyword != null">
                     AND title LIKE CONCAT('%', #{data.keyword}, '%')
                 </if>
+                <if test='!data.category.equals("")'>
+                    AND category = #{data.category}
+                </if>;
     </select>
     
     <!-- 글쓰기 -->

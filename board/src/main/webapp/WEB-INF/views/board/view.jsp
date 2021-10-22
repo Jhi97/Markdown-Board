@@ -60,7 +60,8 @@
                 <button type="button" class="btn btn-secondary" id="back">뒤로</button>
             </div>
             <div class="btn_write">
-                <button type="button" class="btn btn-primary" id="write">수정</button>
+                <button type="button" class="btn btn-primary" id="modify">수정</button>
+                <button type="button" class="btn btn-primary" id="delete">삭제</button>
             </div>
         </footer>
     </div>
