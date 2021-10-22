@@ -5,28 +5,25 @@ import com.jeon.board.mapper.BoardMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService{
+    private static String UPLOADED_FOLDER = "./src/main/webapp/resources/upload/";
     private final BoardMapper boardMapper;
-
-//    @Override
-//    public Map<String, Object> getMain(int displayPost, int postNum, int memberNum) {
-//        Map<String, Object> map = new HashMap<>();
-//        Map mainDate = mainInfoToData(displayPost, postNum, memberNum);
-//        log.info(mainDate.toString());
-//        map.put("post", boardMapper.getListPage(mainDate));
-//        map.put("category", boardMapper.getCategory(memberNum));
-//        map.put("allCount", boardMapper.getCount(memberNum));
-//        return map;
-//    }
 
     @Override
     public Map<String, Object> getMain(int displayPost, int postNum, String keyword, String categoryParam, int memberNum) {
@@ -74,6 +71,35 @@ public class BoardServiceImpl implements BoardService{
     public void postWrite(Post post, int memberNum) {
         log.info("memberNum: " + memberNum);
         boardMapper.postWrite(post, memberNum);
+    }
+
+    @Override
+    public String postImage(MultipartFile image, int memberNum) throws IOException {
+        byte[] bytes = image.getBytes();
+        //이미지 랜덤 이름 부여
+        String fileName = setFileName(image.getOriginalFilename());
+        //멤버 별 별도 폴더 생성
+        setFolder(memberNum);
+        String imageUrl = UPLOADED_FOLDER + memberNum + "/" + fileName;
+        Path path = Paths.get(imageUrl);
+        Files.write(path, bytes);
+        return fileName;
+    }
+    //멤버 별 별도 폴더 생성기
+    public void setFolder(int memberNum) {
+        File Folder = new File(UPLOADED_FOLDER + memberNum);
+        if (!Folder.exists()) {
+            Folder.mkdir();
+            log.info(memberNum+" mkdir");
+        }
+    }
+
+    //파일 이름 랜덤 생성기
+    public static String setFileName(String originalName) {
+        UUID uuid = UUID.randomUUID();
+        String ext = originalName.substring(originalName.lastIndexOf("."));
+        String fileName = uuid + ext;
+        return fileName;
     }
 
     @Override

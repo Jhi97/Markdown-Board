@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -38,7 +39,6 @@ public class BoardController {
         //검색 입력시 페이징 조정
         if (!keyword.isEmpty() || !category.isEmpty()) {
             int searchCount = Integer.parseInt(mainMap.get("searchCount").toString());
-            log.info("searchCount : " + searchCount);
             page.setCount(searchCount);
         }
 
@@ -48,9 +48,8 @@ public class BoardController {
         model.addAttribute("categories", categoryList);
         //검색어 존재 시 카테고리 총 게시글 수정
         if (keyword.isEmpty()) {
-            log.info("empty");
             model.addAttribute("allCount", allCount);
-        }else{
+        } else {
             int categoryCnt = 0;
             for (int i = 0; i < categoryList.size(); i++) {
                 categoryCnt += Integer.parseInt(categoryList.get(i).get("cnt").toString());
@@ -114,6 +113,7 @@ public class BoardController {
         model.addAttribute("categories", category);
         return "/board/modify";
     }
+
     // 사용자 검증 및 게시글 상세정보
     public void setBoardView(int num, Model model, HttpSession session, HttpServletResponse response) throws IOException {
         int memberNum = MemberController.getMemberNum(session);
@@ -141,7 +141,7 @@ public class BoardController {
         } catch (IllegalAccessException e) {
             return "수정 중 에러가 발생했습니다.";
         }
-        return "/board/view?num="+postNum;
+        return "/board/view?num=" + postNum;
     }
 
     //게시글 삭제
@@ -158,5 +158,14 @@ public class BoardController {
             out.flush();
         }
         return "/board/main";
+    }
+
+    @PostMapping("/write/image")
+    @ResponseBody
+    public String postImage(@RequestParam("image") MultipartFile uploadImg, HttpSession session) throws IOException {
+        int memberNum = MemberController.getMemberNum(session);
+        String imageUrl = "../../../resources/upload/"+memberNum+ "/" + boardService.postImage(uploadImg, memberNum);
+        log.info(imageUrl);
+        return imageUrl;
     }
 }

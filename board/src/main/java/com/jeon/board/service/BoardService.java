@@ -1,7 +1,9 @@
 package com.jeon.board.service;
 
 import com.jeon.board.dto.Post;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 
@@ -18,6 +20,9 @@ public interface BoardService {
 
     //글쓰기
     void postWrite(Post post, int memberNum);
+
+    //이미지 업로드 처리
+    String postImage(MultipartFile image, int memberNum) throws IOException;
 
     //글 상세보기
     Post getView(int num, int memberNum) throws IllegalAccessException;

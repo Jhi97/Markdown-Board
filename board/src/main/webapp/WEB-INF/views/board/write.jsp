@@ -77,13 +77,43 @@
 <!-- Bootstrap js -->
 <script src="/node_modules/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    const editor = new toastui.Editor({
+    const Editor = toastui.Editor;
+    const editor = new Editor({
         el: document.querySelector('#editor'),
         previewStyle: 'vertical',
         height: '750px',
         initialEditType: 'markdown',
-        initialValue: '### 내용을 입력하세요'
+        initialValue: '### 내용을 입력하세요',
+        hooks: {
+            addImageBlobHook: (blob, callback) => {
+                uploadImage(blob);
+                console.log(imageUrl);
+                callback(imageUrl, blob.name);
+            }
+        }
     });
+    let imageUrl;
+    function uploadImage(blob) {
+        console.log('insert image');
+        let formData = new FormData();
+        formData.append('image', blob); // 이미지를 폼데이터 file로 변경 'image'가 input name이다.
+        $.ajax({
+            url : '/board/write/image',
+            enctype: 'multipart/form-data',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            async: false, // 비동기를 동기로 변경.
+            success: function(data){
+                alert(data);
+                imageUrl = data;
+            },
+            error: function(data){
+                alert(data);
+            }
+        });
+    };
     // 컨텐츠 내용 확인
     console.log(editor.getMarkdown());
 

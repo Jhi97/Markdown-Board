@@ -4,7 +4,6 @@ import com.jeon.board.dto.Member;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.Map;
 
 public interface MemberService {
@@ -25,7 +24,7 @@ public interface MemberService {
     void editProfile(int memberNum, String introduce, String email);
 
     //이미지 업로드
-    void uploadImg(List<MultipartFile> files, int memberNum, String beforeImg) throws IOException;
+    void uploadImg(MultipartFile image, int memberNum, String beforeImg) throws IOException;
 
     
 }

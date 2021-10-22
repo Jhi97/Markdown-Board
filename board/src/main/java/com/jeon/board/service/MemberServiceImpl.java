@@ -15,9 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Service
 @Slf4j
@@ -73,21 +71,15 @@ public class MemberServiceImpl implements MemberService{
 
     //프로필 사진 업로드
     @Override
-    public void uploadImg(List<MultipartFile> files, int memberNum, String beforeImg) throws IOException {
-        for (MultipartFile file : files) {
-            if (file.isEmpty()) {
-                continue;
-            }
-            byte[] bytes = file.getBytes();
-            //이미지 랜덤 이름 부여
-            UUID uuid = UUID.randomUUID();
-            String fileName = uuid + file.getOriginalFilename();
-            Path path = Paths.get(UPLOADED_FOLDER + fileName);
-            Profile profile = new Profile(memberNum, null, fileName);
-            memberMapper.editProfile(profile);
-            beforeImgDelete(beforeImg);
-            Files.write(path, bytes);
-        }
+    public void uploadImg(MultipartFile image, int memberNum, String beforeImg) throws IOException {
+        byte[] bytes = image.getBytes();
+        //이미지 랜덤 이름 부여
+        String fileName = BoardServiceImpl.setFileName(image.getOriginalFilename());
+        Path path = Paths.get(UPLOADED_FOLDER + fileName);
+        Profile profile = new Profile(memberNum, null, fileName);
+        memberMapper.editProfile(profile);
+        beforeImgDelete(beforeImg);
+        Files.write(path, bytes);
     }
     public void beforeImgDelete(String beforeImg) {
         File file = new File(UPLOADED_FOLDER + beforeImg);

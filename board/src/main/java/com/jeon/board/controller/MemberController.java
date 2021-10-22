@@ -13,10 +13,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.Map;
 
 @Controller
@@ -92,7 +90,7 @@ public class MemberController {
         log.info(uploadImg.getOriginalFilename());
 
         try {
-            memberService.uploadImg(Arrays.asList(uploadImg), memberNum, beforeImg);
+            memberService.uploadImg(uploadImg, memberNum, beforeImg);
 
         }catch (IOException e){
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
