@@ -12,17 +12,14 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 
 @Service
 @Slf4j
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService{
-    private static String UPLOADED_FOLDER = "./src/main/webapp/resources/upload/";
+    private static String UPLOADED_FOLDER = "./src/main/webapp/resources/upload/post/";
     private final BoardMapper boardMapper;
 
     @Override
@@ -68,9 +65,26 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void postWrite(Post post, int memberNum) {
+    public void postWrite(Post post, List noUsedImages, int memberNum) {
         log.info("memberNum: " + memberNum);
+        noUsedImageDelete(noUsedImages, memberNum);
         boardMapper.postWrite(post, memberNum);
+    }
+
+    public void noUsedImageDelete(List noUsedImages, int memberNum) {
+        for (int i = 0; i < noUsedImages.size(); i++) {
+            String noUsedImageName = noUsedImages.get(i).toString();
+            noUsedImageName = noUsedImageName.substring(noUsedImageName.lastIndexOf("/")+1);
+            log.info("delete Name: "+ noUsedImageName);
+            File file = new File(UPLOADED_FOLDER + memberNum + "/" + noUsedImageName);
+            if (file.exists()) {
+                if (file.delete()) {
+                    log.info("프로필 이미지 삭제 성공");
+                }else{
+                    log.info("프로필 이미지 삭제 실패");
+                }
+            }
+        }
     }
 
     @Override

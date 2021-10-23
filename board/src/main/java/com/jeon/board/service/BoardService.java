@@ -19,7 +19,7 @@ public interface BoardService {
     String[] getCategory(int memberNum);
 
     //글쓰기
-    void postWrite(Post post, int memberNum);
+    void postWrite(Post post, List noUsedImages, int memberNum);
 
     //이미지 업로드 처리
     String postImage(MultipartFile image, int memberNum) throws IOException;

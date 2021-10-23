@@ -75,12 +75,22 @@ public class BoardController {
     //작성완료
     @PostMapping("/write")
     @ResponseBody
-    public String postWrite(@RequestBody Post post, HttpSession session) {
+    public String postWrite(@RequestBody Map jsonData,
+                            HttpSession session) {
         int memberNum = MemberController.getMemberNum(session);
+        Post post = setPost(jsonData);
         log.info("member: " + memberNum);
-        log.info("post: " + post.toString());
-        boardService.postWrite(post, memberNum);
+        List noUsedImages = (List) jsonData.get("noUsedImage");
+        boardService.postWrite(post, noUsedImages, memberNum);
         return "/board/main";
+    }
+
+    public Post setPost(Map<String, String> map) {
+        Post post = new Post();
+        post.setTitle(map.get("title"));
+        post.setCategory(map.get("category"));
+        post.setContents(map.get("contents"));
+        return post;
     }
 
     //글 상세보기
@@ -164,7 +174,7 @@ public class BoardController {
     @ResponseBody
     public String postImage(@RequestParam("image") MultipartFile uploadImg, HttpSession session) throws IOException {
         int memberNum = MemberController.getMemberNum(session);
-        String imageUrl = "../../../resources/upload/"+memberNum+ "/" + boardService.postImage(uploadImg, memberNum);
+        String imageUrl = "../../../resources/upload/post/"+memberNum+ "/" + boardService.postImage(uploadImg, memberNum);
         log.info(imageUrl);
         return imageUrl;
     }
