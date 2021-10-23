@@ -28,7 +28,7 @@ public interface BoardService {
     Post getView(int num, int memberNum) throws IllegalAccessException;
 
     //글 수정하기
-    void putModify(Post post, int memberNum) throws Exception;
+    void putModify(Post post, List noUsedImages, int memberNum) throws Exception;
 
     //글 삭제하기
     void delete(int postNum, int memberNum) throws Exception;

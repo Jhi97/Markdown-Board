@@ -130,7 +130,8 @@ public class BoardServiceImpl implements BoardService{
     }
 
     @Override
-    public void putModify(Post post, int memberNum) throws Exception {
+    public void putModify(Post post, List noUsedImages, int memberNum) throws Exception {
+        noUsedImageDelete(noUsedImages, memberNum);
         try {
             boardMapper.putModify(post, memberNum);
         } catch (Exception e) {

@@ -63,7 +63,7 @@
     <div class="custom-align-content" >
         <form class="form-horizontal" method="post" accept-charset="UTF-8" id="joinForm">
             <div class="form-group" id="divId">
-                <label for="userId" class="col-lg-1 control-label">아이디</label>
+                <label for="userId" class="col-lg-2 control-label">아이디</label>
                 <button class="margin_cus btn btn-primary" type="button" id="userIdCheck" name="userIdCheck">중복확인</button>
                 <div class="col-lg-12">
                     <input type="text" class="form-control onlyAlphabetAndNumber" id="userId" name="member_id" data-rule-required="true" placeholder="30자이내의 알파벳, 숫자만 입력 가능합니다." maxlength="30">
@@ -77,7 +77,7 @@
                 </div>
             </div>
             <div class="form-group" id="divPasswordCheck">
-                <label for="userPwCheck" class="col-lg-2 control-label">비밀번호 확인</label>
+                <label for="userPwCheck" class="col-lg-3 control-label">비밀번호 확인</label>
                 <div class="col-lg-12">
                     <input type="password" class="form-control" id="userPwCheck" data-rule-required="true" placeholder="비밀번호 확인" maxlength="30">
                 </div>

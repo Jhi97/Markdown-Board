@@ -159,10 +159,6 @@
             if(category=='선택안함'){
                 category=null;
             }
-
-            //최종 사용된 이미지 배열과 서버 저장됐던 이미지 배열 비교
-
-
             let data = {
                 'title': title,
                 'category': category,

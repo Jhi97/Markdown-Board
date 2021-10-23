@@ -143,10 +143,15 @@ public class BoardController {
     @PutMapping("/view/{postNum}")
     @ResponseBody
     public String putModify(@PathVariable int postNum,
-                            @RequestBody Post post, HttpSession session) throws Exception {
+                            @RequestBody Map jsonData, HttpSession session) throws Exception {
         int memberNum = MemberController.getMemberNum(session);
+        Post post = setPost(jsonData);
+        post.setPost_num(postNum);
+        log.info(post.toString());
+        List noUsedImages = (List) jsonData.get("noUsedImage");
+        log.info("noUsedImaged: " + noUsedImages);
         try {
-            boardService.putModify(post, memberNum);
+            boardService.putModify(post, noUsedImages, memberNum);
             //게시글 번호 또는 아이디 검증
         } catch (IllegalAccessException e) {
             return "수정 중 에러가 발생했습니다.";
