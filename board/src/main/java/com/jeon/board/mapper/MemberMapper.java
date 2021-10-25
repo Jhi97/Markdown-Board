@@ -24,7 +24,7 @@ public interface MemberMapper {
     Profile getProfile(@Param("memberNum") int memberNum);
 
     //로그인
-    int login(@Param("member")Member member);
+    boolean login(@Param("member")Member member);
 
     //프로필 수정
     void editProfile(@Param("profile")Profile profile);

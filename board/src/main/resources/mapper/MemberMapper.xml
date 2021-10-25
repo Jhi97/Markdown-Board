@@ -27,13 +27,13 @@
     </select>
 
     <!-- 아이디 중복체크 -->
-    <select id="idCheck" resultType="int">
+    <select id="idCheck" resultType="boolean">
         SELECT count(*) FROM member WHERE member_id = #{member_id}
     </select>
 
     <!-- 로그인 -->
-    <select id="login" resultType="int">
-        SELECT member_num FROM member
+    <select id="login" resultType="boolean">
+        SELECT IF(COUNT(*) = 1, 1, 0) FROM member
          WHERE member_id = #{member.member_id} AND member_pw = #{member.member_pw};
     </select>
 

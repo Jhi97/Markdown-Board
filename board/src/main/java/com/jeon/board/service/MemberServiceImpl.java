@@ -42,9 +42,10 @@ public class MemberServiceImpl implements MemberService{
     //로그인
     @Override
     public int login(Member member) {
-        int login = memberMapper.login(member);
-        if(login > 0)
-            return login;
+        boolean login = memberMapper.login(member);
+        log.info("login: " + login);
+        if(login)
+            return memberMapper.getMemberNum(member.getMember_id());
         else
             return 0;
     }

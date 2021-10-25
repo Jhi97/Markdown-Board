@@ -30,9 +30,8 @@ public class LoginController {
 
     //로그인 요청
     @PostMapping("/")
-    public String postLogin(Member member, HttpServletRequest request, RedirectAttributes rttr){
+    public String postLogin(Member member, HttpSession session, RedirectAttributes rttr){
         log.info("post login");
-        HttpSession session = request.getSession();
         int memberNum = memberService.login(member);
         Map<String, Object> memberInfo = memberService.getMember(memberNum);
         Profile profile = (Profile) memberInfo.get("profile");
@@ -44,11 +43,17 @@ public class LoginController {
             session.setAttribute("memberNum", memberNum);
             session.setAttribute("profile", profile);
             return "redirect:/board/main?num=1";
-        } else{
+        } else {
             log.info("login Fail");
             session.setAttribute("member", null);
             rttr.addFlashAttribute("msg", false);
             return "redirect:/";
         }
+    }
+
+    @GetMapping("/logout")
+    public String getLogout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/";
     }
 }
