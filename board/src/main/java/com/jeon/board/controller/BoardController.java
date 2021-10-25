@@ -1,5 +1,6 @@
 package com.jeon.board.controller;
 
+import com.jeon.board.CustomAuthException;
 import com.jeon.board.dto.Page;
 import com.jeon.board.dto.Post;
 import com.jeon.board.service.BoardService;
@@ -30,15 +31,8 @@ public class BoardController {
     public String getSearch(@RequestParam(defaultValue = "1") int num,
                             @RequestParam(defaultValue = "") String keyword,
                             @RequestParam(defaultValue = "") String category,
-                            Model model, HttpSession session) {
-        int memberNum = 0;
-        try{
-            memberNum = MemberController.getMemberNum(session);
-        }catch (Exception e){
-            model.addAttribute("msg", false);
-            return "/board/main";
-        }
-
+                            Model model, HttpSession session) throws CustomAuthException {
+        int memberNum = MemberController.getMemberNum(session);
         int allCount = boardService.getCount(memberNum);
 
         Page page = new Page(num, allCount);
@@ -89,7 +83,7 @@ public class BoardController {
     @PostMapping("/write")
     @ResponseBody
     public String postWrite(@RequestBody Map jsonData,
-                            HttpSession session) {
+                            HttpSession session) throws Exception {
         int memberNum = MemberController.getMemberNum(session);
         Post post = setPost(jsonData);
         log.info("member: " + memberNum);
@@ -111,14 +105,8 @@ public class BoardController {
     public String getView(@RequestParam int num,
                           Model model,
                           HttpSession session,
-                          HttpServletResponse response) throws IOException {
-        int memberNum = 0;
-        try{
-            memberNum = MemberController.getMemberNum(session);
-        }catch (Exception e){
-            model.addAttribute("msg", false);
-            return "/board/view";
-        }
+                          HttpServletResponse response) throws IOException, CustomAuthException {
+        int memberNum = MemberController.getMemberNum(session);
         setBoardView(num, model, memberNum, response);
         return "/board/view";
     }
@@ -136,14 +124,8 @@ public class BoardController {
     public String getModify(@RequestParam int num,
                             Model model,
                             HttpSession session,
-                            HttpServletResponse response) throws IOException {
-        int memberNum = 0;
-        try{
-            memberNum = MemberController.getMemberNum(session);
-        }catch (Exception e){
-            model.addAttribute("msg", false);
-            return "/board/view";
-        }
+                            HttpServletResponse response) throws IOException, CustomAuthException {
+        int memberNum = MemberController.getMemberNum(session);
         setBoardView(num, model, memberNum, response);
         String[] category = boardService.getCategory(memberNum);
         model.addAttribute("categories", category);
@@ -202,7 +184,7 @@ public class BoardController {
 
     @PostMapping("/write/image")
     @ResponseBody
-    public String postImage(@RequestParam("image") MultipartFile uploadImg, HttpSession session) throws IOException {
+    public String postImage(@RequestParam("image") MultipartFile uploadImg, HttpSession session) throws IOException, CustomAuthException {
         int memberNum = MemberController.getMemberNum(session);
         String imageUrl = "../../../resources/upload/post/"+memberNum+ "/" + boardService.postImage(uploadImg, memberNum);
         log.info(imageUrl);

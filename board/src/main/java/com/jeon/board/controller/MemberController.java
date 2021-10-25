@@ -1,5 +1,6 @@
 package com.jeon.board.controller;
 
+import com.jeon.board.CustomAuthException;
 import com.jeon.board.dto.Member;
 import com.jeon.board.dto.Profile;
 import com.jeon.board.service.MemberService;
@@ -25,8 +26,14 @@ public class MemberController {
 
     private final MemberService memberService;
 
-    public static int getMemberNum(HttpSession session) {
-        return Integer.parseInt(session.getAttribute("memberNum").toString());
+    public static int getMemberNum(HttpSession session) throws CustomAuthException{
+        int memberNum;
+        try {
+            memberNum = Integer.parseInt(session.getAttribute("memberNum").toString());
+        } catch (Exception e) {
+            throw new CustomAuthException("로그인이 필요한 서비스입니다.");
+        }
+        return memberNum;
     }
 
     //회원가입
@@ -51,14 +58,8 @@ public class MemberController {
     }
     //프로필 페이지
     @GetMapping("/profile")
-    public String getProfile(HttpSession session, Model model) {
-        int memberNum = 0;
-        try{
-            memberNum = getMemberNum(session);
-        }catch (Exception e){
-            model.addAttribute("msg", false);
-            return "/member/profile";
-        }
+    public String getProfile(HttpSession session, Model model) throws CustomAuthException {
+        int memberNum = getMemberNum(session);
         Map<String, Object> map = memberService.getMember(memberNum);
         Member member = (Member) map.get("member");
         Profile profile = (Profile) map.get("profile");
@@ -73,7 +74,7 @@ public class MemberController {
     @PostMapping("/profile/edit")
     @ResponseBody
     public String editProfile(@RequestBody Map<String,Object> json,
-                              HttpSession session) {
+                              HttpSession session) throws CustomAuthException {
         String email = json.get("email").toString();
         String introduce = json.get("introduce").toString();
         log.info("email: " + email + "introduce: "+ introduce);
@@ -84,7 +85,7 @@ public class MemberController {
 
     @PostMapping("/profile/alterImg")
     @ResponseBody
-    public ResponseEntity<?> alterImage(@RequestParam("file") MultipartFile uploadImg, HttpSession session) {
+    public ResponseEntity<?> alterImage(@RequestParam("file") MultipartFile uploadImg, HttpSession session) throws CustomAuthException {
         log.info("run upload");
         // 회원 번호 및 프로필 조회
         int memberNum = getMemberNum(session);

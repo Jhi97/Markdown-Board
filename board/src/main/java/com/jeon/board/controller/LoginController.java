@@ -25,7 +25,7 @@ public class LoginController {
     @GetMapping("/")
     public String getLogin(){
         log.info("hello");
-        return "/member/index";
+        return "/member/login";
     }
 
     //로그인 요청

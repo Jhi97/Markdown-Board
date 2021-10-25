@@ -38,12 +38,6 @@
     </style>
 </head>
 <body>
-    <c:if test="${memberId == null}">
-        <script>
-            alert('로그인 후 이용 가능합니다.');
-            location.replace("/");
-        </script>
-    </c:if>
     <header class="p-3 mb-3">
         <%@include file="../nav.jsp"%>
     </header>
