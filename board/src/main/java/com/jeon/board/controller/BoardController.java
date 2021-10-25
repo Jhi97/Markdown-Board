@@ -31,7 +31,14 @@ public class BoardController {
                             @RequestParam(defaultValue = "") String keyword,
                             @RequestParam(defaultValue = "") String category,
                             Model model, HttpSession session) {
-        int memberNum = MemberController.getMemberNum(session);
+        int memberNum = 0;
+        try{
+            memberNum = MemberController.getMemberNum(session);
+        }catch (Exception e){
+            model.addAttribute("msg", false);
+            return "/board/main";
+        }
+
         int allCount = boardService.getCount(memberNum);
 
         Page page = new Page(num, allCount);
@@ -66,7 +73,13 @@ public class BoardController {
     //글쓰기
     @GetMapping("/write")
     public String getWrite(Model model, HttpSession session) {
-        int memberNum = MemberController.getMemberNum(session);
+        int memberNum = 0;
+        try{
+            memberNum = MemberController.getMemberNum(session);
+        }catch (Exception e){
+            model.addAttribute("msg", false);
+            return "/board/write";
+        }
         String[] category = boardService.getCategory(memberNum);
         model.addAttribute("categories", category);
         return "/board/write";
@@ -99,7 +112,14 @@ public class BoardController {
                           Model model,
                           HttpSession session,
                           HttpServletResponse response) throws IOException {
-        setBoardView(num, model, session, response);
+        int memberNum = 0;
+        try{
+            memberNum = MemberController.getMemberNum(session);
+        }catch (Exception e){
+            model.addAttribute("msg", false);
+            return "/board/view";
+        }
+        setBoardView(num, model, memberNum, response);
         return "/board/view";
     }
 
@@ -117,16 +137,21 @@ public class BoardController {
                             Model model,
                             HttpSession session,
                             HttpServletResponse response) throws IOException {
-        int memberNum = MemberController.getMemberNum(session);
-        setBoardView(num, model, session, response);
+        int memberNum = 0;
+        try{
+            memberNum = MemberController.getMemberNum(session);
+        }catch (Exception e){
+            model.addAttribute("msg", false);
+            return "/board/view";
+        }
+        setBoardView(num, model, memberNum, response);
         String[] category = boardService.getCategory(memberNum);
         model.addAttribute("categories", category);
         return "/board/modify";
     }
 
     // 사용자 검증 및 게시글 상세정보
-    public void setBoardView(int num, Model model, HttpSession session, HttpServletResponse response) throws IOException {
-        int memberNum = MemberController.getMemberNum(session);
+    public void setBoardView(int num, Model model, int memberNum, HttpServletResponse response) throws IOException {
         try {
             Post post = boardService.getView(num, memberNum);
             model.addAttribute("post", post);

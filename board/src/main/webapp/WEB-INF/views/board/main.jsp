@@ -52,6 +52,13 @@
     </script>
 </head>
 <body>
+    <c:if test="${msg == false}">
+    <script>
+        alert('로그인 후 이용 가능합니다.');
+            location.replace("/");
+    </script>
+    </c:if>
+
     <header class="p-3 mb-3">
         <%@include file="../nav.jsp"%>
     </header>
@@ -133,7 +140,6 @@
                     </div>
             </div>
             <!-- 카테고리 출력 끝-->
-
         </div>
     </section>
 

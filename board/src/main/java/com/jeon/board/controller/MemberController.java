@@ -52,7 +52,14 @@ public class MemberController {
     //프로필 페이지
     @GetMapping("/profile")
     public String getProfile(HttpSession session, Model model) {
-        Map<String, Object> map = memberService.getMember(getMemberNum(session));
+        int memberNum = 0;
+        try{
+            memberNum = getMemberNum(session);
+        }catch (Exception e){
+            model.addAttribute("msg", false);
+            return "/member/profile";
+        }
+        Map<String, Object> map = memberService.getMember(memberNum);
         Member member = (Member) map.get("member");
         Profile profile = (Profile) map.get("profile");
         int allCount = Integer.parseInt(map.get("allCount").toString());
@@ -99,6 +106,11 @@ public class MemberController {
         return new ResponseEntity("/member/profile", new HttpHeaders(), HttpStatus.OK);
     }
 
+    @GetMapping("/logout")
+    public String getLogout(HttpSession session) {
+        session.invalidate();
 
+        return "redirect:/";
+    }
 
 }
