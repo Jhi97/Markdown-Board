@@ -1,6 +1,6 @@
 package com.jeon.board.controller;
 
-import com.jeon.board.CustomAuthException;
+import com.jeon.board.error.CustomAuthException;
 import com.jeon.board.dto.Page;
 import com.jeon.board.dto.Post;
 import com.jeon.board.service.BoardService;

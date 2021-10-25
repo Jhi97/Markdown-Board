@@ -21,6 +21,12 @@
 
 </head>
 <body>
+<!-- 에러페이지 접근 후 로그인 확인 후 메인화면 이동 -->
+<c:if test="${memberNum ne null}">
+    <script>
+        location.replace("/board/main");
+    </script>
+</c:if>
 
 <div class="container">
 
