@@ -15,28 +15,9 @@
     <!-- Toast UI Editor Viewer-->
     <script src="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.js"></script>
     <link rel="stylesheet" href="https://uicdn.toast.com/editor/latest/toastui-editor-viewer.min.css" />
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/view.css">
     <title>${post.title} - ${post.category}</title>
-    <style>
-        span.view_category::after{
-            padding: 0px 5px 0px 5px;
-            content: "|";
-        }
-        .info{
-            text-align: right;
-        }
-        .content_head{
-            margin-bottom: 30px;
-        }
-        .viewer{
-            margin: 30px 0px 30px 0px;
-        }
-        .btn_group{
-            float: left;
-        }
-        .btn_write{
-            float: right;
-        }
-    </style>
 </head>
 <body>
     <header class="p-3 mb-3">
@@ -83,55 +64,11 @@
             </div>
         </div>
     </div>
-
-
-
-<!-- Option 1: Bootstrap Bundle with Popper -->
-<script>
-    // 개행 처리
-    let contents = '${post.contents}';
-    contents = contents.replace(/<br>/g, '\n');
-
-    const viewer = new toastui.Editor({
-        el: document.querySelector('#viewer'),
-        initialValue: contents
-    });
-    $(document).ready(function(){
-        //게시글 번호
-        let num = ${post.post_num};
-        $('.locationBtn').click(function () {
-            let val = $(this).attr("id");
-            //뒤로가기
-            if (val == 'back') {
-                back_fn();
-            //홈으로
-            } else if(val == 'main'){
-                window.location.href = '/board/'+val;
-            //삭제
-            } else if(val == 'delete'){
-                let modal = $('#alertModal');
-                modal.modal('show');
-                $('#warningConfirm').click(function(){
-                    $.ajax({
-                        url: "/board/view/"+${post.post_num},
-                        type: "delete",
-                        success(data) {
-                            window.location.replace(data);
-                        },error(data){
-                            alert('알수없는 오류');
-                        }
-                    });
-                });
-            //수정
-            } else{
-                window.location.href = '/board/'+val+'?num='+num;
-            }
-            function back_fn(){
-                window.history.back();
-            }
-        });
-
-    });
-</script>
+    <script>
+        let contents = '${post.contents}';
+        let post_num = ${post.post_num};
+    </script>
+    <!-- Custom JS -->
+    <script src="/js/view.js"></script>
 </body>
 </html>

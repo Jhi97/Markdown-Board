@@ -79,9 +79,9 @@ public class BoardServiceImpl implements BoardService{
             File file = new File(UPLOADED_FOLDER + memberNum + "/" + noUsedImageName);
             if (file.exists()) {
                 if (file.delete()) {
-                    log.info("프로필 이미지 삭제 성공");
+                    log.info("미사용 이미지 삭제 성공");
                 }else{
-                    log.info("프로필 이미지 삭제 실패");
+                    log.info("미사용 이미지 삭제 실패");
                 }
             }
         }

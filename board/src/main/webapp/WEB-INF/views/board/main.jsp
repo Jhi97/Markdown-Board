@@ -13,36 +13,11 @@
     <!-- Bootstrap CSS, JS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/main.css">
 
     <title>${memberId}'s Board</title>
 
-    <style>
-
-        .border-bottom{
-            padding: 0px 10px 10px 10px;
-            border-bottom: solid 1px;
-        }
-        .category-title, .text-title{
-            font-size: 20px;
-        }
-        .category-body{
-            margin-top: 10px;
-            border-left: solid 1px #dee2e6;
-        }
-        a{
-            text-decoration: none;
-        }
-        .categories{
-            margin-bottom: 5px;
-        }
-        .center-align{
-            display: flex;
-            justify-content: center;
-        }
-        .search{
-            width: 25%;
-        }
-    </style>
     <script>
         $(document).ready(function(){
             $('#searchBtn').click(function(){

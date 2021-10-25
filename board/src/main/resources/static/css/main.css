@@ -1,0 +1,24 @@
+.border-bottom{
+    padding: 0px 10px 10px 10px;
+    border-bottom: solid 1px;
+}
+.category-title, .text-title{
+    font-size: 20px;
+}
+.category-body{
+    margin-top: 10px;
+    border-left: solid 1px #dee2e6;
+}
+a{
+    text-decoration: none;
+}
+.categories{
+    margin-bottom: 5px;
+}
+.center-align{
+    display: flex;
+    justify-content: center;
+}
+.search{
+    width: 25%;
+}

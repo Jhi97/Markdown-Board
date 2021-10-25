@@ -1,0 +1,22 @@
+span.view_category::after{
+    padding: 0px 5px 0px 5px;
+    content: "|";
+}
+.info{
+    text-align: right;
+}
+.content_head{
+    margin-bottom: 30px;
+}
+.viewer{
+    margin: 30px 0px 30px 0px;
+}
+.btn_group{
+    float: left;
+}
+.btn_write{
+    float: right;
+}
+footer{
+    margin-bottom: 7%;
+}

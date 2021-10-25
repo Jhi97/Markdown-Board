@@ -87,6 +87,5 @@
 
 
 </div>
-<!-- Bootstrap JS -->
 </body>
 </html>
