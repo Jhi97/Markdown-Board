@@ -108,6 +108,7 @@ public class MemberController {
 
     @GetMapping("/logout")
     public String getLogout(HttpSession session) {
+        log.info(session.getAttribute("memberId").toString()+" logout");
         session.invalidate();
 
         return "redirect:/";

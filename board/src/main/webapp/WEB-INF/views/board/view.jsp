@@ -67,6 +67,7 @@
     <script>
         let contents = '${post.contents}';
         let post_num = ${post.post_num};
+
     </script>
     <!-- Custom JS -->
     <script src="/js/view.js"></script>

@@ -1,5 +1,3 @@
-// 개행 처리
-contents = contents.replace(/<br>/g, '\n');
 
 const viewer = new toastui.Editor({
     el: document.querySelector('#viewer'),

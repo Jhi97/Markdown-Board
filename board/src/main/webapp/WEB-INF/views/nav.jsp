@@ -17,7 +17,7 @@
                 <li><a class="dropdown-item" href="/board/write">글쓰기</a></li>
                 <li><a class="dropdown-item" href="/member/profile">프로필</a></li>
                 <li><hr class="dropdown-divider"></li>
-                <li><a class="dropdown-item" href="/logout">로그아웃</a></li>
+                <li><a class="dropdown-item" href="/member/logout">로그아웃</a></li>
             </ul>
         </div>
     </div>

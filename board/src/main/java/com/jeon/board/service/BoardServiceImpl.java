@@ -123,8 +123,10 @@ public class BoardServiceImpl implements BoardService{
             IllegalAccessException userError = new IllegalAccessException();
             throw userError;
         }
-        // javascript 변수 선언을 위한 개행 처리
-        post.setContents(post.getContents().replace("\n", "<br>"));
+        // javascript 변수 선언을 위한 문자열 처리
+        post.setContents(post.getContents().replace("\n", "\\n"));
+        post.setContents(post.getContents().replace("'", "\\'"));
+        post.setContents(post.getContents().replace("</script>", "<\\/script>"));
         return post;
     }
 
