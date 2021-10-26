@@ -86,7 +86,7 @@ public class BoardController {
                             HttpSession session) throws Exception {
         int memberNum = MemberController.getMemberNum(session);
         Post post = setPost(jsonData);
-        log.info("Write Member Num: " + memberNum);
+        log.info("member: " + memberNum);
         List noUsedImages = (List) jsonData.get("noUsedImage");
         boardService.postWrite(post, noUsedImages, memberNum);
         return "/board/main";

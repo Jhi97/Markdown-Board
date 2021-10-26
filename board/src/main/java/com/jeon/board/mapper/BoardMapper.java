@@ -22,7 +22,7 @@ public interface BoardMapper {
     // 글쓰기
     void postWrite(@Param("post")Post post, @Param("memberNum") int memberNum);
     //글 상세보기
-    Post getView(@Param("post_num")int post_num, @Param("memberNum")int memberNum);
+    Post getView(@Param("post_num")int num);
     //글 수정
     void putModify(@Param("post") Post post, @Param("memberNum") int memberNum);
     //글 삭제
