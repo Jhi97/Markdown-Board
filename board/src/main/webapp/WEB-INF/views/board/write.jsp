@@ -75,7 +75,6 @@
             </div>
         </div>
     </div>
-    <hr/>
 
     <!-- Custom JS -->
     <script src="/js/write.js"></script>
