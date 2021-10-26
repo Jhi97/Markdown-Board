@@ -64,7 +64,6 @@ $(document).ready(function(){
             return false;
         }
         let profileData = {'email' : emailVal, 'introduce' : $('#introduce').val()}
-        console.log(profileData);
         $.ajax({
             url : "/member/profile/edit",
             type : "POST",

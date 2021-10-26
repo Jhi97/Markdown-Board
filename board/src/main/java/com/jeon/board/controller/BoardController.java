@@ -115,7 +115,6 @@ public class BoardController {
     @GetMapping("/category")
     @ResponseBody
     public String categoryList(@RequestParam("category") String category) {
-        log.info(category);
         return "/board/main";
     }
 
@@ -154,9 +153,7 @@ public class BoardController {
         int memberNum = MemberController.getMemberNum(session);
         Post post = setPost(jsonData);
         post.setPost_num(postNum);
-        log.info(post.toString());
         List noUsedImages = (List) jsonData.get("noUsedImage");
-        log.info("noUsedImaged: " + noUsedImages);
         try {
             boardService.putModify(post, noUsedImages, memberNum);
             //게시글 번호 또는 아이디 검증

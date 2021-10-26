@@ -17,7 +17,6 @@ let imageUrl;
 let imageUrlArr = [];
 let finalImageUrlArr = new Array();
 function uploadImage(blob) {
-    console.log('insert image');
     let formData = new FormData();
     formData.append('image', blob); // 이미지를 폼데이터 file로 변경 'image'가 input name이다.
     $.ajax({
@@ -31,7 +30,6 @@ function uploadImage(blob) {
         success: function(data){
             imageUrl = data;
             imageUrlArr.push(imageUrl);
-            console.log(imageUrlArr);
         },
         error: function(data){
             alert(data);
@@ -87,7 +85,6 @@ $(document).ready(function(){
             'contents': contents,
             'noUsedImage': finalImage_fn()
         };
-        console.log(data);
 
         // //ajax를 통한 게시글 저장
         $.ajax({
@@ -109,12 +106,10 @@ $(document).ready(function(){
         $('img').each(function(){
             finalImageUrlArr.push($(this).attr('src'));
         });
-        console.log(finalImageUrlArr);
 
         //삭제예정 이미지 배열(삽입되어 서버에 저장된 이미지 배열과 최종 사용된 이미지 배열 중복값 제거)
         let deleteImages = imageUrlArr.filter(x => !finalImageUrlArr.includes(x));
         //아이콘 이미지 제거
-        console.log(deleteImages);
         return deleteImages
     }
 });

@@ -26,7 +26,6 @@ public class BoardServiceImpl implements BoardService{
     public Map<String, Object> getMain(int displayPost, int postNum, String keyword, String categoryParam, int memberNum) {
         Map<String, Object> map = new HashMap<>();
         Map mainDate = mainInfoToDataV2(displayPost, postNum, keyword, categoryParam, memberNum);
-        log.info(mainDate.toString());
         map.put("post", boardMapper.getMain(mainDate));
         map.put("category", boardMapper.getCategory(keyword, memberNum));
         map.put("allCount", boardMapper.getCount(memberNum));
