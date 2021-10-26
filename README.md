@@ -1,7 +1,6 @@
-# ToyProject
-토이 프로젝트 모음
+# Markdown-Board
 
-## 👨🏼‍🔧 Board 프로젝트 ( 진행 중 )
+## 👨🏼‍🔧 Markdown-Board 프로젝트 ( 진행 중 )
 
 ### ⚙️ Board 기술 스택
 
