@@ -49,13 +49,15 @@
     
     <!-- 글쓰기 -->
     <insert id="postWrite">
-        INSERT INTO board.post (member_num, title, contents, category)
-         VALUES(#{memberNum}, #{post.title}, #{post.contents}, #{post.category});
+        INSERT INTO post (member_num, post_num, title, category, contents)
+         VALUES(#{memberNum}, (
+             SELECT IFNULL(MAX(p.post_num),0)+1 FROM post p WHERE p.member_num = #{memberNum}
+             ), #{post.title}, #{post.category}, #{post.contents});
     </insert>
 
     <!-- 글 상세보기 -->
-    <select id="getView" resultType="com.jeon.board.dto.Post">
-        SELECT * FROM post WHERE post_num = #{post_num};
+    <select id="getView" parameterType="hashMap" resultType="com.jeon.board.dto.Post">
+        SELECT * FROM post WHERE post_num = #{post_num} AND member_num = #{memberNum};
     </select>
 
     <!-- 글 수정 -->
