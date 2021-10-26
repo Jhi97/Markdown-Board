@@ -77,7 +77,6 @@ public class MemberController {
                               HttpSession session) throws CustomAuthException {
         String email = json.get("email").toString();
         String introduce = json.get("introduce").toString();
-        log.info("email: " + email + "introduce: "+ introduce);
         int memberNum = getMemberNum(session);
         memberService.editProfile(memberNum, introduce, email);
         return "/member/profile";

@@ -65,7 +65,6 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public void postWrite(Post post, List noUsedImages, int memberNum) {
-        log.info("memberNum: " + memberNum);
         noUsedImageDelete(noUsedImages, memberNum);
         boardMapper.postWrite(post, memberNum);
     }
@@ -117,15 +116,16 @@ public class BoardServiceImpl implements BoardService{
 
     @Override
     public Post getView(int num, int memberNum) throws IllegalAccessException {
-        Post post = boardMapper.getView(num);
-        if (!(post.getMember_num()==memberNum)) {
+        Post post = null;
+        try {
+            post = boardMapper.getView(num, memberNum);
+        } catch (Exception e) {
             IllegalAccessException userError = new IllegalAccessException();
             throw userError;
-        }else{
-            // javascript 변수 선언을 위한 개행 처리
-            post.setContents(post.getContents().replace("\n", "<br>"));
-            return post;
         }
+        // javascript 변수 선언을 위한 개행 처리
+        post.setContents(post.getContents().replace("\n", "<br>"));
+        return post;
     }
 
     @Override

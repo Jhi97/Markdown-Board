@@ -6,6 +6,7 @@ import com.jeon.board.mapper.BoardMapper;
 import com.jeon.board.mapper.MemberMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -24,10 +25,13 @@ public class MemberServiceImpl implements MemberService{
     private static String UPLOADED_FOLDER = "./src/main/webapp/resources/upload/member_Img/";
     private final MemberMapper memberMapper;
     private final BoardMapper boardMapper;
+    private final PasswordEncoder passwordEncoder;
 
     //회원 가입
     @Override
     public void join(Member member) {
+        //패스워드 암호화
+        member.setMember_pw(passwordEncoder.encode(member.getMember_pw()));
         memberMapper.join(member);
         int memberNum = memberMapper.getMemberNum(member.getMember_id());
         memberMapper.joinProfile(memberNum);
@@ -42,12 +46,12 @@ public class MemberServiceImpl implements MemberService{
     //로그인
     @Override
     public int login(Member member) {
-        boolean login = memberMapper.login(member);
-        log.info("login: " + login);
-        if(login)
-            return memberMapper.getMemberNum(member.getMember_id());
-        else
+        String loginUserPw = memberMapper.login(member);
+        //패스워드 일치여부 체크
+        if(!passwordEncoder.matches(member.getMember_pw(), loginUserPw))
             return 0;
+        else
+            return memberMapper.getMemberNum(member.getMember_id());
     }
 
     //회원 정보 조회
