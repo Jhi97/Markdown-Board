@@ -1,6 +1,6 @@
 # Markdown-Board
 
-## 👨🏼‍🔧 Markdown-Board 프로젝트 ( 진행 중 )
+## 👨🏼‍🔧 Markdown-Board 프로젝트
 
 ### ⚙️ Board 기술 스택
 
