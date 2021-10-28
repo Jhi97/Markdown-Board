@@ -6,7 +6,7 @@
 
 📃 API & Library :  Bootstrap, Toast UI Editor
 
-💬 Language : JAVA 11, JavaScript, JSTL, JSP, JQuery, XML
+💬 Language : JAVA, JavaScript, JSTL, JSP, JQuery, XML
 
 💾 DataBase : MySQL
 
